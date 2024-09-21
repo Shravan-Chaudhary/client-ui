@@ -6,7 +6,7 @@ import { Pizza } from 'lucide-react'
 export default function Home() {
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-40 flex flex-col items-center justify-center text-center'>
-      <Pill>Order Now!</Pill>
+      <Pill>Ranked #1 in India</Pill>
       <h1 className='max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl'>
         Fuel your <span className='text-primary'>Gaming </span> with Epic Fuel.
       </h1>
@@ -17,7 +17,6 @@ export default function Home() {
       </p>
       <Link href={'/'}>
         <Button size={'lg'} className='rounded-full mt-5'>
-          {' '}
           Order Now <Pizza className='ml-2 h-5 w-5' />
         </Button>
       </Link>
