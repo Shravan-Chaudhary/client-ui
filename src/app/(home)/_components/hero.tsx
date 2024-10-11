@@ -37,7 +37,7 @@ const Hero = () => {
           alt='pizza'
           height={500}
           width={500}
-          className='-z-0 hidden sm:inline-flex max-h-[500px] max-w-[500px]'
+          className='-z-0 hidden lg:inline-flex max-h-[500px] max-w-[500px]'
         />
       </div>
     </>
