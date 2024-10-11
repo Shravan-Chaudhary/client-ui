@@ -1,11 +1,11 @@
 import React from 'react'
-import MaxWidthWrapper from './MaxWidthWrapper'
+import MaxWidthWrapper from './maxWidthWrapper'
 import Link from 'next/link'
 import { Button, buttonVariants } from './ui/button'
-import CustomSelect from './Select'
+import CustomSelect from './select'
 import basket from '@/images/basket.png'
 import Image from 'next/image'
-import Dot from './Dot'
+import Dot from './dot'
 import { cn } from '@/lib/utils'
 
 const Navbar = () => {
@@ -14,8 +14,15 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className='flex h-14 items-center justify-between border-b border-zinc-200'>
           {/* Logo */}
-          <Link href={'/'} className='flex z-40 font-semibold space-x-5'>
-            <span>fuel.</span>
+          <Link href={'/'} className='flex z-40 font-semibold items-center'>
+            {/* <Image
+              src={energyDrink}
+              alt='energy-drink'
+              height={50}
+              width={50}
+              className='inline-flex sm:hidden'
+            /> */}
+            <span className=''>fuel.</span>
           </Link>
 
           {/* Menu Items */}
