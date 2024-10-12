@@ -6,6 +6,7 @@ import pizzaImage from "@/images/pizza.png";
 import { Product } from "../types";
 import OptionSelector from "@/components/option-selector";
 import { CustomizationOption } from "@/types";
+import ToppingsList from "./toppings-list";
 
 type PropTypes = { product: Product };
 const pizzaSizes: CustomizationOption[] = [
@@ -30,28 +31,28 @@ const ProductModal = ({ product }: PropTypes) => {
             >
                 Choose
             </DialogTrigger>
-            <DialogContent className="max-w-3xl p-0 ">
+            <DialogContent className="max-w-3xl rounded-3xl p-0">
                 <div className="flex">
                     {/* left */}
-                    <div className="flex w-1/3 items-center justify-center rounded-l-3xl bg-white p-2">
+                    <div className="hidden w-1/3 items-center justify-center rounded-l-3xl bg-white p-2 sm:flex">
                         <Image alt="image" src={pizzaImage} height={250} width={250} />
                     </div>
                     {/* right */}
-                    <div className="w-2/3 px-6 py-4">
+                    <div className="w-full px-6 py-4 lg:w-2/3">
                         <h3 className="text-xl font-bold">{product.name}</h3>
                         {/*TODO: Zinc shade to description text */}
                         <p className="mt-1">{product.description}</p>
                         {/* Radio Group */}
-                        <div className="mt-6 flex flex-col gap-2">
-                            <h3 className="text-lg font-semibold">Choose Size</h3>
+                        <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
+                            <h3 className="text-lg font-semibold">Size</h3>
                             <OptionSelector options={pizzaSizes} defaultValue="small" />
                         </div>
-                        <div className="mt-6 flex flex-col gap-2">
-                            <h3 className="text-lg font-semibold">Choose Crust</h3>
+                        <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
+                            <h3 className="text-lg font-semibold">Crust</h3>
                             <OptionSelector options={crustTypes} defaultValue="thin" />
                         </div>
-                        <div className="mt-6 flex flex-col gap-2">
-                            <h3 className="text-lg font-semibold">Toppings</h3>
+                        <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
+                            <ToppingsList />
                         </div>
                     </div>
                 </div>
