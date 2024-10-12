@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import React from "react";
-import ProductModal from "./product-model";
+import ProductModal from "./product-modal";
 import { Product } from "../types";
 
 type PropTypes = { product: Product };
