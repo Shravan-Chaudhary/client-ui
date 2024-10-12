@@ -2,7 +2,8 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Image from 'next/image'
 import menu from '@/images/menu.png'
-import ProductCard, { Product } from './productCard'
+import ProductCard from './productCard'
+import { Product } from '../types'
 
 const pizzas: Product[] = [
   {

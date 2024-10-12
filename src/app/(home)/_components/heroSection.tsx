@@ -6,7 +6,7 @@ import { Pizza } from 'lucide-react'
 import Image from 'next/image'
 import pizza from '@/images/pizza.png'
 
-const Hero = () => {
+const HeroSection = () => {
   return (
     <>
       {/* Hero Container */}
@@ -44,4 +44,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+export default HeroSection
