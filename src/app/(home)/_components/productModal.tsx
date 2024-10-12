@@ -4,8 +4,19 @@ import Image from "next/image";
 import React from "react";
 import pizzaImage from "@/images/pizza.png";
 import { Product } from "../types";
+import OptionSelector from "@/components/option-selector";
+import { CustomizationOption } from "@/types";
 
 type PropTypes = { product: Product };
+const pizzaSizes: CustomizationOption[] = [
+    { value: "small", label: "Small" },
+    { value: "medium", label: "Medium" },
+    { value: "large", label: "Large" },
+];
+const crustTypes: CustomizationOption[] = [
+    { value: "thin", label: "Thin", image: "/api/placeholder/100/100" },
+    { value: "thick", label: "Thick", image: "/api/placeholder/100/100" },
+];
 
 const ProductModal = ({ product }: PropTypes) => {
     return (
@@ -28,9 +39,17 @@ const ProductModal = ({ product }: PropTypes) => {
                     {/* right */}
                     <div className="w-2/3 px-6 py-4">
                         <h3 className="text-xl font-bold">{product.name}</h3>
-                        {/* Zinc shade to description text */}
-                        {/* Add eslint-plugin-tailwindcss package*/}
+                        {/*TODO: Zinc shade to description text */}
                         <p className="mt-1">{product.description}</p>
+                        {/* Radio Group */}
+                        <div className="mt-6 flex flex-col gap-2">
+                            <h3 className="text-lg font-semibold">Choose Size</h3>
+                            <OptionSelector options={pizzaSizes} defaultValue="small" />
+                        </div>
+                        <div className="mt-6 flex flex-col gap-2">
+                            <h3 className="text-lg font-semibold">Choose Crust</h3>
+                            <OptionSelector options={crustTypes} defaultValue="thin" />
+                        </div>
                     </div>
                 </div>
             </DialogContent>

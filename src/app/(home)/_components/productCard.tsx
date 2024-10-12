@@ -6,7 +6,7 @@ import { Product } from "../types";
 
 type PropTypes = { product: Product };
 
-const ProductCard = ({ product }: PropTypes) => {
+const ProductCard: React.FC<PropTypes> = ({ product }) => {
     return (
         <Card className="rounded-3xl border-none">
             <CardHeader className="flex items-center justify-center">
