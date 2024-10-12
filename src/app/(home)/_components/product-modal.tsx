@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
 import React from "react";
@@ -7,6 +7,7 @@ import { Product } from "../types";
 import OptionSelector from "@/components/option-selector";
 import { CustomizationOption } from "@/types";
 import ToppingsList from "./toppings-list";
+import { ShoppingCart } from "lucide-react";
 
 type PropTypes = { product: Product };
 const pizzaSizes: CustomizationOption[] = [
@@ -53,6 +54,13 @@ const ProductModal = ({ product }: PropTypes) => {
                         </div>
                         <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
                             <ToppingsList />
+                        </div>
+                        <div className="mt-4 flex items-center justify-between sm:mt-6">
+                            <span className="text-lg font-bold">$100</span>
+                            <Button size="sm" className="flex items-center justify-center gap-2 rounded-full p-5">
+                                <ShoppingCart className="size-5" />
+                                <span>Add to Cart </span>
+                            </Button>
                         </div>
                     </div>
                 </div>
