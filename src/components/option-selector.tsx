@@ -13,7 +13,7 @@ const OptionSelector: React.FC<PropTypes> = ({ options, defaultValue }) => {
         <RadioGroup defaultValue={defaultValue} className="grid grid-cols-3 gap-4">
             {options.map((option) => {
                 return (
-                    <div className="rounded-2xl bg-white" key={option.value}>
+                    <div className="max-w-40 rounded-2xl bg-white" key={option.value}>
                         <RadioGroupItem
                             value={option.value}
                             id={option.value}
@@ -22,7 +22,7 @@ const OptionSelector: React.FC<PropTypes> = ({ options, defaultValue }) => {
                         />
                         <Label
                             htmlFor={option.value}
-                            className="flex flex-col items-center justify-between rounded-2xl border-2 bg-transparent p-4 hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                            className="sm: flex max-w-40 flex-col items-center justify-between rounded-xl border-2 bg-transparent p-2 py-3 hover:text-accent-foreground peer-data-[state=checked]:border-primary sm:rounded-2xl sm:p-4 [&:has([data-state=checked])]:border-primary"
                         >
                             {option.label}
                         </Label>
