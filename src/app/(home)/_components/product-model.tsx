@@ -50,6 +50,9 @@ const ProductModal = ({ product }: PropTypes) => {
                             <h3 className="text-lg font-semibold">Choose Crust</h3>
                             <OptionSelector options={crustTypes} defaultValue="thin" />
                         </div>
+                        <div className="mt-6 flex flex-col gap-2">
+                            <h3 className="text-lg font-semibold">Toppings</h3>
+                        </div>
                     </div>
                 </div>
             </DialogContent>

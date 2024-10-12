@@ -1,5 +1,5 @@
 import React from "react";
-import MaxWidthWrapper from "./maxWidthWrapper";
+import MaxWidthWrapper from "./max-width-wrapper";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import CustomSelect from "./select";

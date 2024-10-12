@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import menu from "@/images/menu.png";
-import ProductCard from "./productCard";
+import ProductCard from "./product-card";
 import { Product } from "../types";
 
 const pizzas: Product[] = [
