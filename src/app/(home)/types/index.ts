@@ -5,3 +5,11 @@ export type Product = {
     image: string;
     price: number;
 };
+
+export type Topping = {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    isAvailable: boolean;
+};
