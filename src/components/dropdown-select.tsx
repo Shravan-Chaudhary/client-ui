@@ -9,8 +9,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Restaurant } from "@/types";
 
-const CustomSelect = () => {
+type PropTypes = {
+    restaurants: Restaurant[];
+};
+
+const DropdownSelect: React.FC<PropTypes> = ({ restaurants }) => {
     return (
         <Select>
             <SelectTrigger className="h-[30px] w-[140px]">
@@ -19,15 +24,15 @@ const CustomSelect = () => {
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>Locations</SelectLabel>
-                    <SelectItem value="apple">Agra</SelectItem>
-                    <SelectItem value="banana"> Delhi</SelectItem>
-                    <SelectItem value="blueberry">Noida</SelectItem>
-                    <SelectItem value="grapes">Mohali</SelectItem>
-                    <SelectItem value="pineapple">Chandigarh</SelectItem>
+                    {restaurants.map((restaurant) => (
+                        <SelectItem key={restaurant.id} value={restaurant.name.toLowerCase()}>
+                            {restaurant.name}
+                        </SelectItem>
+                    ))}
                 </SelectGroup>
             </SelectContent>
         </Select>
     );
 };
 
-export default CustomSelect;
+export default DropdownSelect;
