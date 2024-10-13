@@ -2,13 +2,28 @@ import React from "react";
 import MaxWidthWrapper from "./max-width-wrapper";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
-import CustomSelect from "./select";
+import DropdownSelect from "./dropdown-select";
 import basket from "@/images/basket.png";
 import Image from "next/image";
 import Dot from "./dot";
 import { cn } from "@/lib/utils";
+import { Restaurant } from "@/types";
+import { ONE_HOUR_IN_SEC } from "@/constants";
 
-const Navbar = () => {
+const Navbar = async () => {
+    const response = await fetch(process.env.BACKEND_URL + "/api/v1/auth/tenants", {
+        next: {
+            revalidate: ONE_HOUR_IN_SEC,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch restaurants");
+    }
+
+    const restaurants: Restaurant[] = await response.json();
+    console.log(restaurants);
+
     return (
         <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
             <MaxWidthWrapper>
@@ -28,7 +43,7 @@ const Navbar = () => {
                     {/* Menu Items */}
                     <div className=" flex items-center gap-4">
                         <div className="inline-flex font-medium text-gray-800">
-                            <CustomSelect />
+                            <DropdownSelect restaurants={restaurants} />
                         </div>
 
                         <div className="hidden sm:flex">

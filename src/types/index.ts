@@ -3,3 +3,9 @@ export type CustomizationOption = {
     label: string;
     image?: string;
 };
+
+export type Restaurant = {
+    id: number;
+    name: string;
+    address: string;
+};
