@@ -1,3 +1,5 @@
+import { PriceType, WidgetType } from "@/constants";
+
 export type Product = {
     id: string;
     name: string;
@@ -5,6 +7,27 @@ export type Product = {
     image: string;
     price: number;
 };
+
+export interface CategoryAttribute {
+    name: string;
+    widgetType: WidgetType.SWITCH | WidgetType.RADIO;
+    defaultValue: string;
+    availableOptions: string[];
+}
+
+export interface PriceConfiguration {
+    [key: string]: {
+        priceType: PriceType.BASE | PriceType.ADDITIONAL;
+        availableOptions: string[];
+    };
+}
+
+export interface Category {
+    _id: string;
+    name: string;
+    priceConfiguration: PriceConfiguration;
+    attributes: CategoryAttribute[];
+}
 
 export type Topping = {
     id: string;
