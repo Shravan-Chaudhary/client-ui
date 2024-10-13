@@ -4,6 +4,7 @@ import Image from "next/image";
 import menu from "@/images/menu.png";
 import ProductCard from "./product-card";
 import { Product } from "../types";
+import { Category } from "../types";
 
 const pizzas: Product[] = [
     {
@@ -36,7 +37,11 @@ const pizzas: Product[] = [
     },
 ];
 
-const CatalogSection = () => {
+type PropTypes = {
+    categories: Category[];
+};
+
+const CatalogSection: React.FC<PropTypes> = ({ categories }) => {
     return (
         <section className="mt-[195px]">
             <div>
@@ -49,9 +54,11 @@ const CatalogSection = () => {
             <div className="flex items-center justify-center">
                 <Tabs defaultValue="pizza" className="">
                     <TabsList>
-                        <TabsTrigger value="pizza">Pizza</TabsTrigger>
-                        <TabsTrigger value="drinks">Drinks</TabsTrigger>
-                        <TabsTrigger value="snacks">Snacks</TabsTrigger>
+                        {categories.map((category) => (
+                            <TabsTrigger key={category._id} value={category._id}>
+                                {category.name}
+                            </TabsTrigger>
+                        ))}
                     </TabsList>
                     <TabsContent value="pizza">
                         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
