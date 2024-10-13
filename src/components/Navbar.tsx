@@ -11,18 +11,17 @@ import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
 
 const Navbar = async () => {
-    const response = await fetch(process.env.BACKEND_URL + "/api/v1/auth/tenants", {
+    const restaurantsResponse = await fetch(process.env.BACKEND_URL + "/api/v1/auth/tenants", {
         next: {
             revalidate: ONE_HOUR_IN_SEC,
         },
     });
 
-    if (!response.ok) {
+    if (!restaurantsResponse.ok) {
         throw new Error("Failed to fetch restaurants");
     }
 
-    const restaurants: Restaurant[] = await response.json();
-    console.log(restaurants);
+    const restaurants: Restaurant[] = await restaurantsResponse.json();
 
     return (
         <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
