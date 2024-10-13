@@ -3,45 +3,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import menu from "@/images/menu.png";
 import ProductCard from "./product-card";
-import { Product } from "../types";
-import { Category } from "../types";
-
-const pizzas: Product[] = [
-    {
-        id: "1",
-        name: "Margherita",
-        description: "Classic pizza with tomato sauce, mozzarella, and basil",
-        image: "/pizza.png",
-        price: 8.99,
-    },
-    {
-        id: "2",
-        name: "Pepperoni",
-        description: "Pepperoni pizza with tomato sauce and mozzarella",
-        image: "/pizza.png",
-        price: 9.99,
-    },
-    {
-        id: "3",
-        name: "BBQ Chicken",
-        description: "BBQ sauce, chicken, red onions, and cilantro",
-        image: "/pizza.png",
-        price: 10.99,
-    },
-    {
-        id: "4",
-        name: "Veggie",
-        description: "Tomato sauce, mozzarella, bell peppers, olives, and onions",
-        image: "/pizza.png",
-        price: 9.49,
-    },
-];
+import { Product, Category } from "../types";
 
 type PropTypes = {
     categories: Category[];
+    products: Product[];
 };
 
-const CatalogSection: React.FC<PropTypes> = ({ categories }) => {
+const CatalogSection: React.FC<PropTypes> = ({ categories, products }) => {
     return (
         <section className="mt-[195px]">
             <div>
@@ -52,7 +21,7 @@ const CatalogSection: React.FC<PropTypes> = ({ categories }) => {
             </div>
 
             <div className="flex items-center justify-center">
-                <Tabs defaultValue="pizza" className="">
+                <Tabs defaultValue={categories[0]._id} className="">
                     <TabsList>
                         {categories.map((category) => (
                             <TabsTrigger key={category._id} value={category._id}>
@@ -60,27 +29,16 @@ const CatalogSection: React.FC<PropTypes> = ({ categories }) => {
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                    <TabsContent value="pizza">
-                        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                            {pizzas.map((pizza) => {
-                                return <ProductCard key={pizza.id} product={pizza} />;
-                            })}
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="drinks">
-                        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                            {pizzas.map((pizza) => {
-                                return <ProductCard key={pizza.id} product={pizza} />;
-                            })}
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="snacks">
-                        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                            {pizzas.map((pizza) => {
-                                return <ProductCard key={pizza.id} product={pizza} />;
-                            })}
-                        </div>
-                    </TabsContent>
+
+                    {categories.map((category) => (
+                        <TabsContent key={category._id} value={category._id}>
+                            <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                {products.map((product) => {
+                                    return <ProductCard key={product._id} product={product} />;
+                                })}
+                            </div>
+                        </TabsContent>
+                    ))}
                 </Tabs>
             </div>
         </section>

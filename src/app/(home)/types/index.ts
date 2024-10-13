@@ -1,11 +1,21 @@
 import { PriceType, WidgetType } from "@/constants";
 
+export type ProductAttributes = {
+    name: string;
+    value: string | boolean;
+};
+
 export type Product = {
-    id: string;
+    _id: string;
     name: string;
     description: string;
     image: string;
-    price: number;
+    categoryId: string;
+    category: Category;
+    priceConfiguration: PriceConfiguration;
+    attributes: ProductAttributes[];
+    isPublished: boolean;
+    createdAt: string;
 };
 
 export interface CategoryAttribute {

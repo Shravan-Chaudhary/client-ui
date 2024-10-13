@@ -8,7 +8,7 @@ type PropTypes = { product: Product };
 
 const ProductCard: React.FC<PropTypes> = ({ product }) => {
     return (
-        <Card className="rounded-3xl border-none">
+        <Card className="min-w-[300] rounded-3xl border-none">
             <CardHeader className="flex items-center justify-center">
                 <Image alt="pizza-image" width={150} height={150} src={product.image} />
             </CardHeader>
@@ -19,7 +19,7 @@ const ProductCard: React.FC<PropTypes> = ({ product }) => {
             <CardFooter className="mt-2 flex justify-between">
                 <p>
                     <span>From </span>
-                    <span className="font-bold">${product.price}</span>
+                    <span className="font-bold">${100}</span>
                 </p>
                 <ProductModal product={product} />
             </CardFooter>
