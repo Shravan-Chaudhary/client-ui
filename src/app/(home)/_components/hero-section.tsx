@@ -10,9 +10,9 @@ const HeroSection = () => {
     return (
         <>
             {/* Hero Container */}
-            <div className="flex size-full justify-between">
+            <div className="flex justify-between">
                 {/* Branding */}
-                <div className="mt-1p0">
+                <div className="">
                     <Pill>Ranked #1 in India</Pill>
                     <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
                         Fuel your <span className="text-primary">Gaming </span> with Epic Fuel.
