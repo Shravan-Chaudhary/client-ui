@@ -2,23 +2,12 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
 import React from "react";
-import pizzaImage from "@/images/pizza.png";
 import { Product } from "../types";
 import OptionSelector from "@/components/option-selector";
-import { CustomizationOption } from "@/types";
 import ToppingsList from "./toppings-list";
 import { ShoppingCart } from "lucide-react";
 
 type PropTypes = { product: Product };
-const pizzaSizes: CustomizationOption[] = [
-    { value: "small", label: "Small" },
-    { value: "medium", label: "Medium" },
-    { value: "large", label: "Large" },
-];
-const crustTypes: CustomizationOption[] = [
-    { value: "thin", label: "Thin", image: "/api/placeholder/100/100" },
-    { value: "thick", label: "Thick", image: "/api/placeholder/100/100" },
-];
 
 const ProductModal = ({ product }: PropTypes) => {
     return (
@@ -36,7 +25,7 @@ const ProductModal = ({ product }: PropTypes) => {
                 <div className="flex">
                     {/* left */}
                     <div className="hidden w-1/3 items-center justify-center rounded-l-3xl bg-white p-2 sm:flex">
-                        <Image alt="image" src={pizzaImage} height={250} width={250} />
+                        <Image alt="image" src={product.image} height={250} width={250} />
                     </div>
                     {/* right */}
                     <div className="w-full px-6 py-4 lg:w-2/3">
@@ -44,14 +33,16 @@ const ProductModal = ({ product }: PropTypes) => {
                         {/*TODO: Zinc shade to description text */}
                         <p className="mt-1">{product.description}</p>
                         {/* Radio Group */}
-                        <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
-                            <h3 className="text-lg font-semibold">Size</h3>
-                            <OptionSelector options={pizzaSizes} defaultValue="small" />
-                        </div>
-                        <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
-                            <h3 className="text-lg font-semibold">Crust</h3>
-                            <OptionSelector options={crustTypes} defaultValue="thin" />
-                        </div>
+                        {Object.entries(product.category.priceConfiguration).map(([key, value]) => (
+                            <div key={key} className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
+                                <h3 className="text-lg font-semibold">{key}</h3>
+                                <OptionSelector
+                                    options={value.availableOptions}
+                                    defaultValue={value.availableOptions[0]}
+                                />
+                            </div>
+                        ))}
+                        {/*TODO: Fetch Toppings (dynamic)*/}
                         <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
                             <ToppingsList />
                         </div>
