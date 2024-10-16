@@ -17,7 +17,14 @@ type SelectedPriceConfig = {
 };
 const ProductModal = ({ product }: PropTypes) => {
     const dispatch = useAppDispatch();
-    const [selectedPriceConfig, setSelectedPriceConfig] = React.useState<SelectedPriceConfig>();
+    const defaultPriceConfig: SelectedPriceConfig = Object.entries(product.category.priceConfiguration).reduce(
+        (acc, [key, value]) => {
+            acc[key] = value.availableOptions[0];
+            return acc;
+        },
+        {} as SelectedPriceConfig
+    );
+    const [selectedPriceConfig, setSelectedPriceConfig] = React.useState<SelectedPriceConfig>(defaultPriceConfig);
     const [selectedToppings, setSelectedToppings] = React.useState<string[]>([]);
 
     const handleToppingToggle = (toppingId: string) => {
