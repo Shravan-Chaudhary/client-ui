@@ -1,15 +1,39 @@
+"use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import React, { Suspense } from "react";
+import React, { startTransition, Suspense } from "react";
 import { Product } from "../types";
-import OptionSelector from "@/components/option-selector";
 import ToppingsList from "./toppings-list";
 import { ShoppingCart } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 type PropTypes = { product: Product };
-
+type SelectedConfig = {
+    [key: string]: string;
+};
 const ProductModal = ({ product }: PropTypes) => {
+    const [selectedConfig, setSelectedConfig] = React.useState<SelectedConfig>();
+    const [selectedToppings, setSelectedToppings] = React.useState<string[]>([]);
+
+    const handleToppingToggle = (toppingId: string) => {
+        setSelectedToppings((prev) =>
+            prev.includes(toppingId) ? prev.filter((id) => id !== toppingId) : [...prev, toppingId]
+        );
+    };
+    const handleConfigChange = (key: string, value: string) => {
+        startTransition(() => {
+            setSelectedConfig((prev) => {
+                const newConfig = { ...prev, [key]: value };
+                console.log("Updated selectedConfig:", newConfig);
+                console.log("selectedConfig:", selectedConfig);
+                console.log("Selected Toppings:", selectedToppings);
+                return newConfig;
+            });
+        });
+    };
+
     return (
         <Dialog>
             <DialogTrigger
@@ -36,16 +60,40 @@ const ProductModal = ({ product }: PropTypes) => {
                         {Object.entries(product.category.priceConfiguration).map(([key, value]) => (
                             <div key={key} className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
                                 <h3 className="text-lg font-semibold">{key}</h3>
-                                <OptionSelector
-                                    options={value.availableOptions}
+                                <RadioGroup
+                                    onValueChange={(value: string) => handleConfigChange(key, value)}
                                     defaultValue={value.availableOptions[0]}
-                                />
+                                    className="grid grid-cols-3 gap-4"
+                                >
+                                    {value.availableOptions.map((option) => {
+                                        return (
+                                            <div className="max-w-40 rounded-2xl bg-white" key={option}>
+                                                <RadioGroupItem
+                                                    value={option}
+                                                    id={option}
+                                                    className="peer sr-only"
+                                                    aria-label={option}
+                                                />
+                                                <Label
+                                                    htmlFor={option}
+                                                    className="sm: flex max-w-40 flex-col items-center justify-between rounded-xl border-2 bg-transparent p-2 py-3 hover:text-accent-foreground peer-data-[state=checked]:border-primary sm:rounded-2xl sm:p-4 [&:has([data-state=checked])]:border-primary"
+                                                >
+                                                    {option}
+                                                </Label>
+                                            </div>
+                                        );
+                                    })}
+                                </RadioGroup>
                             </div>
                         ))}
                         {/*TODO: Fetch Toppings (dynamic)*/}
+                        {/*TODO: Add Toppings to cart state*/}
                         <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
                             <Suspense fallback={"Loading Toppings.."}>
-                                <ToppingsList />
+                                <ToppingsList
+                                    selectedToppings={selectedToppings}
+                                    handleToppingToggle={handleToppingToggle}
+                                />
                             </Suspense>
                         </div>
                         <div className="mt-4 flex items-center justify-between sm:mt-6">

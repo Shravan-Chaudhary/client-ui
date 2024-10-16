@@ -40,7 +40,7 @@ export interface Category {
 }
 
 export type Topping = {
-    id: string;
+    _id: string;
     name: string;
     image: string;
     price: number;

@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 import { Topping } from "../types";
 import { CircleCheck } from "lucide-react";
 
-type PropTypes = { topping: Topping; isSelected: boolean; onToggle: () => void };
+type PropTypes = { topping: Topping; isSelected: boolean; handleToggle: () => void };
 
-const ToppingCard: React.FC<PropTypes> = ({ topping, isSelected, onToggle }) => {
+const ToppingCard: React.FC<PropTypes> = ({ topping, isSelected, handleToggle }) => {
     return (
         <Button
             variant={"outline"}
@@ -16,7 +16,7 @@ const ToppingCard: React.FC<PropTypes> = ({ topping, isSelected, onToggle }) => 
                 "relative flex h-full max-w-40 flex-col gap-1 rounded-2xl p-0 pb-1 lg:gap-2",
                 isSelected && "border-primary"
             )}
-            onClick={onToggle}
+            onClick={handleToggle}
         >
             <Image alt={topping.name} src={topping.image} height={80} width={80} />
             <h4>{topping.name}</h4>
