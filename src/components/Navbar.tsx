@@ -3,12 +3,9 @@ import MaxWidthWrapper from "./max-width-wrapper";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import DropdownSelect from "./dropdown-select";
-import basket from "@/images/basket.png";
-import Image from "next/image";
-import Dot from "./dot";
-import { cn } from "@/lib/utils";
 import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
+import CartIcon from "./cart-icon";
 
 const Navbar = async () => {
     const restaurantsResponse = await fetch(process.env.BACKEND_URL + "/api/v1/auth/tenants", {
@@ -55,14 +52,7 @@ const Navbar = async () => {
                             </Link>
 
                             {/* Cart Icon */}
-                            <Link
-                                href={"/cart"}
-                                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "relative mr-5")}
-                            >
-                                <Image src={basket} alt="basket" width={23} height={23} />
-                                <Dot />
-                            </Link>
-
+                            <CartIcon />
                             <Link href={"/logout"} className="">
                                 <Button size="sm" className="rounded-full px-5">
                                     Logout

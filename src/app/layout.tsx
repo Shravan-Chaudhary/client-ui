@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
+import StoreProvider from "./providers/store-provider";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
@@ -18,10 +19,12 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={cn("min-h-screen antialiased bg-[#E5E8EC]", manrope.className)}>
-                <Navbar />
-                {children}
-            </body>
+            <StoreProvider>
+                <body className={cn("min-h-screen antialiased bg-[#E5E8EC]", manrope.className)}>
+                    <Navbar />
+                    {children}
+                </body>
+            </StoreProvider>
         </html>
     );
 }
