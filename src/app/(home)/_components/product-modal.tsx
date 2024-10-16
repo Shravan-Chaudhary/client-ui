@@ -1,7 +1,7 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from "react";
 import { Product } from "../types";
 import OptionSelector from "@/components/option-selector";
 import ToppingsList from "./toppings-list";
@@ -44,7 +44,9 @@ const ProductModal = ({ product }: PropTypes) => {
                         ))}
                         {/*TODO: Fetch Toppings (dynamic)*/}
                         <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
-                            <ToppingsList />
+                            <Suspense fallback={"Loading Toppings.."}>
+                                <ToppingsList />
+                            </Suspense>
                         </div>
                         <div className="mt-4 flex items-center justify-between sm:mt-6">
                             <span className="text-lg font-bold">$100</span>
