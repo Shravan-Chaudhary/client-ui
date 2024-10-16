@@ -8,13 +8,16 @@ import ToppingsList from "./toppings-list";
 import { ShoppingCart } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { addToCart } from "@/lib/store/features/cart/cartSlice";
 
 type PropTypes = { product: Product };
-type SelectedConfig = {
+type SelectedPriceConfig = {
     [key: string]: string;
 };
 const ProductModal = ({ product }: PropTypes) => {
-    const [selectedConfig, setSelectedConfig] = React.useState<SelectedConfig>();
+    const dispatch = useAppDispatch();
+    const [selectedPriceConfig, setSelectedPriceConfig] = React.useState<SelectedPriceConfig>();
     const [selectedToppings, setSelectedToppings] = React.useState<string[]>([]);
 
     const handleToppingToggle = (toppingId: string) => {
@@ -24,14 +27,22 @@ const ProductModal = ({ product }: PropTypes) => {
     };
     const handleConfigChange = (key: string, value: string) => {
         startTransition(() => {
-            setSelectedConfig((prev) => {
+            setSelectedPriceConfig((prev) => {
                 const newConfig = { ...prev, [key]: value };
-                console.log("Updated selectedConfig:", newConfig);
-                console.log("selectedConfig:", selectedConfig);
-                console.log("Selected Toppings:", selectedToppings);
                 return newConfig;
             });
         });
+    };
+
+    const handleAddToCart = () => {
+        const cartItem = {
+            product: product,
+            selectedConfig: {
+                selectedPriceConfig: selectedPriceConfig!,
+                selectedToppings,
+            },
+        };
+        dispatch(addToCart(cartItem));
     };
 
     return (
@@ -98,7 +109,11 @@ const ProductModal = ({ product }: PropTypes) => {
                         </div>
                         <div className="mt-4 flex items-center justify-between sm:mt-6">
                             <span className="text-lg font-bold">$100</span>
-                            <Button size="sm" className="flex items-center justify-center gap-2 rounded-full p-5">
+                            <Button
+                                onClick={handleAddToCart}
+                                size="sm"
+                                className="flex items-center justify-center gap-2 rounded-full p-5"
+                            >
                                 <ShoppingCart className="size-5" />
                                 <span>Add to Cart </span>
                             </Button>
