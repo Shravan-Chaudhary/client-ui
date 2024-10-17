@@ -1,5 +1,6 @@
 import React from "react";
 import ToppingCard from "./topping-card";
+import { Topping } from "../types";
 
 const toppings = [
     { _id: "1", name: "Cheese", image: "/cheese.png", price: 50, isAvailable: true },
@@ -12,8 +13,8 @@ const ToppingsList = ({
     selectedToppings,
     handleToppingToggle,
 }: {
-    selectedToppings: string[];
-    handleToppingToggle: (toppingId: string) => void;
+    selectedToppings: Topping[];
+    handleToppingToggle: (topping: Topping) => void;
 }) => {
     return (
         <section>
@@ -22,9 +23,9 @@ const ToppingsList = ({
                 {toppings.map((topping) => (
                     <ToppingCard
                         key={topping._id}
-                        isSelected={selectedToppings.includes(topping._id)}
+                        isSelected={selectedToppings.includes(topping)}
                         topping={topping}
-                        handleToggle={() => handleToppingToggle(topping._id)}
+                        handleToggle={() => handleToppingToggle(topping)}
                     />
                 ))}
             </div>

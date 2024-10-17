@@ -1,4 +1,4 @@
-import { Product } from "@/app/(home)/types";
+import { Product, Topping } from "@/app/(home)/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem {
@@ -7,7 +7,7 @@ export interface CartItem {
         selectedPriceConfig: {
             [key: string]: string;
         };
-        selectedToppings: string[];
+        selectedToppings: Topping[];
     };
 }
 export interface CartState {

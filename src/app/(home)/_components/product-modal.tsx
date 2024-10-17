@@ -3,7 +3,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
 import React, { startTransition, Suspense } from "react";
-import { Product } from "../types";
+import { Product, Topping } from "../types";
 import ToppingsList from "./toppings-list";
 import { ShoppingCart } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -25,11 +25,11 @@ const ProductModal = ({ product }: PropTypes) => {
         {} as SelectedPriceConfig
     );
     const [selectedPriceConfig, setSelectedPriceConfig] = React.useState<SelectedPriceConfig>(defaultPriceConfig);
-    const [selectedToppings, setSelectedToppings] = React.useState<string[]>([]);
+    const [selectedToppings, setSelectedToppings] = React.useState<Topping[]>([]);
 
-    const handleToppingToggle = (toppingId: string) => {
+    const handleToppingToggle = (topping: Topping) => {
         setSelectedToppings((prev) =>
-            prev.includes(toppingId) ? prev.filter((id) => id !== toppingId) : [...prev, toppingId]
+            prev.includes(topping) ? prev.filter((id) => id !== topping) : [...prev, topping]
         );
     };
     const handleConfigChange = (key: string, value: string) => {
