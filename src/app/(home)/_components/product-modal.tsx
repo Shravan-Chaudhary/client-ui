@@ -115,7 +115,7 @@ const ProductModal = ({ product }: PropTypes) => {
                             </Suspense>
                         </div>
                         <div className="mt-4 flex items-center justify-between sm:mt-6">
-                            <span className="text-lg font-bold">$100</span>
+                            <span className="text-lg font-bold">&#8377;100</span>
                             <Button
                                 onClick={handleAddToCart}
                                 size="sm"
