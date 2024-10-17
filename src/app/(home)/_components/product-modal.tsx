@@ -27,6 +27,15 @@ const ProductModal = ({ product }: PropTypes) => {
     const [selectedPriceConfig, setSelectedPriceConfig] = React.useState<SelectedPriceConfig>(defaultPriceConfig);
     const [selectedToppings, setSelectedToppings] = React.useState<Topping[]>([]);
 
+    const totalPrice = React.useMemo(() => {
+        const toppingsTotal = selectedToppings.reduce((acc, topping) => acc + topping.price, 0);
+        const priceConfigTotal = Object.entries(selectedPriceConfig).reduce((acc, [key, value]: [string, string]) => {
+            const price = product.priceConfiguration[key].availableOptions[value];
+            return acc + price;
+        }, 0);
+        return toppingsTotal + priceConfigTotal;
+    }, [selectedPriceConfig, selectedToppings, product]);
+
     const handleToppingToggle = (topping: Topping) => {
         setSelectedToppings((prev) =>
             prev.includes(topping) ? prev.filter((id) => id !== topping) : [...prev, topping]
@@ -115,7 +124,7 @@ const ProductModal = ({ product }: PropTypes) => {
                             </Suspense>
                         </div>
                         <div className="mt-4 flex items-center justify-between sm:mt-6">
-                            <span className="text-lg font-bold">&#8377;100</span>
+                            <span className="text-lg font-bold">&#8377;{totalPrice}</span>
                             <Button
                                 onClick={handleAddToCart}
                                 size="sm"

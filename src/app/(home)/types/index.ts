@@ -4,6 +4,14 @@ export type ProductAttributes = {
     name: string;
     value: string | boolean;
 };
+export interface ProductPriceConfiguration {
+    [key: string]: {
+        priceType: PriceType.BASE | PriceType.ADDITIONAL;
+        availableOptions: {
+            [key: string]: number;
+        };
+    };
+}
 
 export type Product = {
     _id: string;
@@ -12,7 +20,7 @@ export type Product = {
     image: string;
     categoryId: string;
     category: Category;
-    priceConfiguration: PriceConfiguration;
+    priceConfiguration: ProductPriceConfiguration;
     attributes: ProductAttributes[];
     isPublished: boolean;
     createdAt: string;
@@ -25,7 +33,7 @@ export interface CategoryAttribute {
     availableOptions: string[];
 }
 
-export interface PriceConfiguration {
+export interface CategoryPriceConfiguration {
     [key: string]: {
         priceType: PriceType.BASE | PriceType.ADDITIONAL;
         availableOptions: string[];
@@ -35,7 +43,7 @@ export interface PriceConfiguration {
 export interface Category {
     _id: string;
     name: string;
-    priceConfiguration: PriceConfiguration;
+    priceConfiguration: CategoryPriceConfiguration;
     attributes: CategoryAttribute[];
 }
 

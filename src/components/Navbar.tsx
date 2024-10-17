@@ -19,7 +19,6 @@ const Navbar = async () => {
     }
 
     const restaurants: Restaurant[] = await restaurantsResponse.json().then((response) => response.data);
-    console.log(restaurants);
 
     return (
         <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
