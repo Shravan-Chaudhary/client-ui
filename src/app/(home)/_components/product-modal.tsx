@@ -26,6 +26,7 @@ const ProductModal = ({ product }: PropTypes) => {
         },
         {} as SelectedPriceConfig
     );
+    const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
     const [selectedPriceConfig, setSelectedPriceConfig] = React.useState<SelectedPriceConfig>(defaultPriceConfig);
     const [selectedToppings, setSelectedToppings] = React.useState<Topping[]>([]);
 
@@ -83,10 +84,11 @@ const ProductModal = ({ product }: PropTypes) => {
             qty: 1,
         };
         dispatch(addToCart(cartItem));
+        setDialogOpen(false);
     };
 
     return (
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger
                 className={buttonVariants({
                     size: "sm",
