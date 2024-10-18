@@ -84,6 +84,7 @@ const ProductModal = ({ product }: PropTypes) => {
             qty: 1,
         };
         dispatch(addToCart(cartItem));
+        setSelectedToppings([]);
         setDialogOpen(false);
     };
 
