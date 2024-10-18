@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { addToCart, CartItem } from "@/lib/store/features/cart/cartSlice";
-import { hashItem } from "@/lib/utils";
+import { addToCartToast, hashItem } from "@/lib/utils";
 
 type PropTypes = { product: Product };
 type SelectedPriceConfig = {
@@ -86,6 +86,7 @@ const ProductModal = ({ product }: PropTypes) => {
         dispatch(addToCart(cartItem));
         setSelectedToppings([]);
         setDialogOpen(false);
+        addToCartToast();
     };
 
     return (
