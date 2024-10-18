@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import ProductModal from "./product-modal";
 import { Product } from "../types";
+import { getMininumPrice } from "@/lib/utils";
 
 type PropTypes = { product: Product };
 
@@ -19,7 +20,7 @@ const ProductCard: React.FC<PropTypes> = ({ product }) => {
             <CardFooter className="mt-2 flex justify-between">
                 <p>
                     <span>From </span>
-                    <span className="font-bold">&#8377;{450}</span>
+                    <span className="font-bold">&#8377;{getMininumPrice(product)}</span>
                 </p>
                 <ProductModal product={product} />
             </CardFooter>
