@@ -1,14 +1,16 @@
 import { Product, Topping } from "@/app/(home)/types";
+import { hashItem } from "@/lib/utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CartItem {
-    product: Product;
+export interface CartItem extends Pick<Product, "_id" | "name" | "image" | "priceConfiguration"> {
     selectedConfig: {
         selectedPriceConfig: {
             [key: string]: string;
         };
         selectedToppings: Topping[];
     };
+    qty: number;
+    hash?: string;
 }
 export interface CartState {
     cartItems: CartItem[];
@@ -23,9 +25,10 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action: PayloadAction<CartItem>) => {
-            const newItem = {
-                product: action.payload.product,
-                selectedConfig: action.payload.selectedConfig,
+            const hash = hashItem(action.payload);
+            const newItem: CartItem = {
+                ...action.payload,
+                hash,
             };
             window.localStorage.setItem("cartItems", JSON.stringify([...state.cartItems, newItem]));
             return {

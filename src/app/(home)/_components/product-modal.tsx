@@ -8,8 +8,9 @@ import ToppingsList from "./toppings-list";
 import { ShoppingCart } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { addToCart } from "@/lib/store/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { addToCart, CartItem } from "@/lib/store/features/cart/cartSlice";
+import { hashItem } from "@/lib/utils";
 
 type PropTypes = { product: Product };
 type SelectedPriceConfig = {
@@ -17,6 +18,7 @@ type SelectedPriceConfig = {
 };
 const ProductModal = ({ product }: PropTypes) => {
     const dispatch = useAppDispatch();
+    const cartItems = useAppSelector((state) => state.cart.cartItems);
     const defaultPriceConfig: SelectedPriceConfig = Object.entries(product.category.priceConfiguration).reduce(
         (acc, [key, value]) => {
             acc[key] = value.availableOptions[0];
@@ -36,6 +38,24 @@ const ProductModal = ({ product }: PropTypes) => {
         return toppingsTotal + priceConfigTotal;
     }, [selectedPriceConfig, selectedToppings, product]);
 
+    const itemAlreadyInCart: boolean = React.useMemo(() => {
+        const currentItemConfig = {
+            _id: product._id,
+            name: product.name,
+            image: product.image,
+            priceConfiguration: product.priceConfiguration,
+            selectedConfig: {
+                selectedPriceConfig: { ...selectedPriceConfig },
+                selectedToppings,
+            },
+            qty: 1,
+        };
+
+        const hash = hashItem(currentItemConfig);
+        const found = cartItems.some((item) => item.hash === hash);
+        return found;
+    }, [selectedPriceConfig, selectedToppings, product, cartItems]);
+
     const handleToppingToggle = (topping: Topping) => {
         setSelectedToppings((prev) =>
             prev.includes(topping) ? prev.filter((id) => id !== topping) : [...prev, topping]
@@ -51,12 +71,16 @@ const ProductModal = ({ product }: PropTypes) => {
     };
 
     const handleAddToCart = () => {
-        const cartItem = {
-            product: product,
+        const cartItem: CartItem = {
+            _id: product._id,
+            name: product.name,
+            image: product.image,
+            priceConfiguration: product.priceConfiguration,
             selectedConfig: {
                 selectedPriceConfig: selectedPriceConfig!,
                 selectedToppings,
             },
+            qty: 1,
         };
         dispatch(addToCart(cartItem));
     };
@@ -116,12 +140,15 @@ const ProductModal = ({ product }: PropTypes) => {
                         {/*TODO: Fetch Toppings (dynamic)*/}
                         {/*TODO: Add Toppings to cart state*/}
                         <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
-                            <Suspense fallback={"Loading Toppings.."}>
-                                <ToppingsList
-                                    selectedToppings={selectedToppings}
-                                    handleToppingToggle={handleToppingToggle}
-                                />
-                            </Suspense>
+                            {/* todo: Make this check dynamic */}
+                            {product.category.name === "Pizza" && (
+                                <Suspense fallback={"Loading Toppings.."}>
+                                    <ToppingsList
+                                        selectedToppings={selectedToppings}
+                                        handleToppingToggle={handleToppingToggle}
+                                    />
+                                </Suspense>
+                            )}
                         </div>
                         <div className="mt-4 flex items-center justify-between sm:mt-6">
                             <span className="text-lg font-bold">&#8377;{totalPrice}</span>
@@ -129,9 +156,11 @@ const ProductModal = ({ product }: PropTypes) => {
                                 onClick={handleAddToCart}
                                 size="sm"
                                 className="flex items-center justify-center gap-2 rounded-full p-5"
+                                disabled={itemAlreadyInCart}
                             >
                                 <ShoppingCart className="size-5" />
-                                <span>Add to Cart </span>
+
+                                {itemAlreadyInCart ? <span>Already in Cart</span> : <span>Add to Cart </span>}
                             </Button>
                         </div>
                     </div>
