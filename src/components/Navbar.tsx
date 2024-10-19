@@ -2,7 +2,7 @@ import React from "react";
 import MaxWidthWrapper from "./max-width-wrapper";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
-import DropdownSelect from "./dropdown-select";
+import DropdownSelect from "./tenant-selector";
 import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
 import CartIcon from "./cart-icon";
