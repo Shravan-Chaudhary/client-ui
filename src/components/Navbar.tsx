@@ -2,7 +2,7 @@ import React from "react";
 import MaxWidthWrapper from "./max-width-wrapper";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
-import DropdownSelect from "./tenant-selector";
+import TenantSelector from "./tenant-selector";
 import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
 import CartIcon from "./cart-icon";
@@ -39,7 +39,7 @@ const Navbar = async () => {
                     {/* Menu Items */}
                     <div className=" flex items-center gap-4">
                         <div className="inline-flex font-medium text-gray-800">
-                            <DropdownSelect restaurants={restaurants} />
+                            <TenantSelector restaurants={restaurants} />
                         </div>
 
                         <div className="hidden sm:flex">

@@ -4,7 +4,13 @@ import menu from "@/images/menu.png";
 import ProductList from "./product-list";
 import ProductSkeletonList from "./product-skeleton-list";
 
-const CatalogSection: React.FC = async () => {
+interface PropTypes {
+    searchParams: {
+        restaurantId: string;
+    };
+}
+
+const CatalogSection: React.FC<PropTypes> = async ({ searchParams }) => {
     return (
         <section className="mt-[50px]">
             <div>
@@ -16,7 +22,7 @@ const CatalogSection: React.FC = async () => {
 
             <div className="flex items-center justify-center">
                 <Suspense fallback={<ProductSkeletonList />}>
-                    <ProductList />
+                    <ProductList searchParams={searchParams} />
                 </Suspense>
             </div>
         </section>

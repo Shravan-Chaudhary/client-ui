@@ -3,13 +3,13 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import CatalogSection from "./_components/catalog-section";
 import { Suspense } from "react";
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: { restaurantId: string } }) {
     return (
         <MaxWidthWrapper className="mb-12 mt-28 flex flex-col items-center justify-center text-center sm:mt-40">
             <HeroSection />
             {/* Tabs */}
             <Suspense fallback={"loading..."}>
-                <CatalogSection />
+                <CatalogSection searchParams={searchParams} />
             </Suspense>
         </MaxWidthWrapper>
     );
