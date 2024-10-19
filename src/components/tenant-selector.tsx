@@ -11,7 +11,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Restaurant } from "@/types";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type PropTypes = {
     restaurants: Restaurant[];
@@ -19,11 +19,13 @@ type PropTypes = {
 
 const TenantSelector: React.FC<PropTypes> = ({ restaurants }) => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+
     const handleValueChange = (value: string) => {
         router.push(`?restaurantId=${value}`);
     };
     return (
-        <Select onValueChange={handleValueChange}>
+        <Select onValueChange={handleValueChange} defaultValue={searchParams.get("restaurantId") || ""}>
             <SelectTrigger className="h-[30px] w-[140px]">
                 <SelectValue placeholder="Select Outlet" />
             </SelectTrigger>
