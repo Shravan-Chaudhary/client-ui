@@ -85,6 +85,7 @@ const ProductModal = ({ product }: PropTypes) => {
         };
         dispatch(addToCart(cartItem));
         setSelectedToppings([]);
+        setSelectedPriceConfig(defaultPriceConfig);
         setDialogOpen(false);
         addToCartToast();
     };
@@ -141,8 +142,7 @@ const ProductModal = ({ product }: PropTypes) => {
                                 </RadioGroup>
                             </div>
                         ))}
-                        {/*TODO: Fetch Toppings (dynamic)*/}
-                        {/*TODO: Add Toppings to cart state*/}
+                        {/*TODO: Fetch Toppings (dynamically by tenantId)*/}
                         <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
                             {/* todo: Make this check dynamic */}
                             {product.category.name === "Pizza" && (
