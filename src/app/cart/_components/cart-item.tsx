@@ -15,7 +15,7 @@ const CartItem = () => {
             </div>
             {/* Name, Config */}
             <div className="flex flex-col">
-                <h4 className="text-sm md:text-base md:font-medium">Mushroom Pizza</h4>
+                <h4 className="text-sm font-medium md:text-base">Mushroom Pizza</h4>
                 <p className="text-xs text-neutral-500 md:text-sm">Small, Thin</p>
                 <p className="text-xs text-neutral-500 md:text-sm">Cheese</p>
             </div>
@@ -45,7 +45,7 @@ const CartItem = () => {
 
             {/* Price & Delete */}
             <div className="flex items-center justify-center gap-5">
-                <p className="text-base font-medium md:text-lg md:font-semibold">&#8377;800</p>
+                <p className="text-base font-semibold md:text-lg">&#8377;800</p>
                 <Button
                     variant="outline"
                     size="icon"
