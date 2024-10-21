@@ -22,7 +22,7 @@ const SigninCard = () => {
                     <Label htmlFor="email">Email</Label>
                     <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                        <Input id="email" placeholder="Enter your email" required type="email" className="pl-10" />
+                        <Input id="email" placeholder="jane@gmail.com" required type="email" className="pl-10" />
                     </div>
                 </div>
                 <div className="space-y-2">
@@ -33,7 +33,7 @@ const SigninCard = () => {
                             id="password"
                             required
                             type={showPassword ? "text" : "password"}
-                            placeholder="Enter your password"
+                            placeholder="******"
                             className="px-10"
                         />
                         <Button

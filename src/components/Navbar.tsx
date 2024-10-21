@@ -39,6 +39,7 @@ const Navbar = async () => {
                     {/* Menu Items */}
                     <div className=" flex items-center gap-4">
                         <div className="inline-flex font-medium text-gray-800">
+                            {/*TODO: Remove tenant selector from other pages */}
                             <TenantSelector restaurants={restaurants} />
                         </div>
 
