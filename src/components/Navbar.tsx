@@ -6,8 +6,10 @@ import TenantSelector from "./tenant-selector";
 import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
 import CartIcon from "./cart-icon";
+import { getSession } from "@/lib/session";
 
 const Navbar = async () => {
+    const session = await getSession();
     const restaurantsResponse = await fetch(process.env.BACKEND_URL + "/api/v1/auth/tenants", {
         next: {
             revalidate: ONE_HOUR_IN_SEC,
@@ -53,9 +55,9 @@ const Navbar = async () => {
 
                             {/* Cart Icon */}
                             <CartIcon />
-                            <Link href={"/logout"} className="">
+                            <Link href={session ? "/logout" : "/sign-in"} className="">
                                 <Button size="sm" className="rounded-full px-5">
-                                    Logout
+                                    {session ? "Logout" : "Login"}
                                 </Button>
                             </Link>
                         </div>
