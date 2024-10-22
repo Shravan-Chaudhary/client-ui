@@ -1,70 +1,92 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, Mail, Lock, Send } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useFormState } from "react-dom";
+import login from "@/lib/actions/login";
+import SignInButton from "./sign-in-button";
+import { errorToast, successToast } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+
+const initialState = {
+    type: "",
+    message: "",
+};
 
 const SigninCard = () => {
-    const [isHovered, setIsHovered] = useState(false);
+    //TODO: Add toast for success and error messages
+    const router = useRouter();
+    const [state, formAction] = useFormState(login, initialState);
     const [showPassword, setShowPassword] = useState(false);
+
+    if (state?.type === "success") {
+        router.push("/");
+    }
+
+    useEffect(() => {
+        if (state?.type === "success") {
+            successToast(state.message || "Signed in successfully!");
+        } else if (state?.type === "error") {
+            errorToast(state.message || "An error occurred. Please try again.");
+        }
+    }, [state]);
 
     return (
         <Card className="mx-auto w-full max-w-sm">
             <CardHeader>
                 <CardTitle className="text-center text-2xl font-bold">Sign-in</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                        <Input id="email" placeholder="jane@gmail.com" required type="email" className="pl-10" />
+            <CardContent>
+                <form action={formAction} className="space-y-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <Input
+                                id="email"
+                                name="email"
+                                placeholder="jane@gmail.com"
+                                required
+                                type="email"
+                                className="pl-10"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                        <Input
-                            id="password"
-                            required
-                            type={showPassword ? "text" : "password"}
-                            placeholder="******"
-                            className="px-10"
-                        />
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? (
-                                <EyeOff className="size-4 text-gray-400" />
-                            ) : (
-                                <Eye className="size-4 text-gray-400" />
-                            )}
-                            <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
-                        </Button>
+                    <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <Input
+                                id="password"
+                                name="password"
+                                required
+                                type={showPassword ? "text" : "password"}
+                                placeholder="******"
+                                className="px-10"
+                            />
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="size-4 text-gray-400" />
+                                ) : (
+                                    <Eye className="size-4 text-gray-400" />
+                                )}
+                                <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                            </Button>
+                        </div>
                     </div>
-                </div>
-                <Button
-                    size={"default"}
-                    className="w-full transition-all duration-300 ease-in-out"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    Submit
-                    <Send
-                        className={`ml-3 size-4 transition-all duration-300 ease-in-out ${
-                            isHovered ? "-translate-y-1 translate-x-1" : ""
-                        }`}
-                    />
-                </Button>
+                    <SignInButton />
+                </form>
             </CardContent>
             <CardFooter className="flex justify-between pt-2">
                 <Link
