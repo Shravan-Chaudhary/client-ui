@@ -7,6 +7,7 @@ import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
 import CartIcon from "./cart-icon";
 import { getSession } from "@/lib/session";
+import LogoutButton from "./logout-button";
 
 const Navbar = async () => {
     const session = await getSession();
@@ -55,11 +56,16 @@ const Navbar = async () => {
 
                             {/* Cart Icon */}
                             <CartIcon />
-                            <Link href={session ? "/logout" : "/sign-in"} className="">
-                                <Button size="sm" className="rounded-full px-5">
-                                    {session ? "Logout" : "Login"}
-                                </Button>
-                            </Link>
+                            {/* Login/Logout button */}
+                            {session ? (
+                                <LogoutButton />
+                            ) : (
+                                <Link href={"/sign-in"} className="">
+                                    <Button size="sm" className="rounded-full px-5">
+                                        Login
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>

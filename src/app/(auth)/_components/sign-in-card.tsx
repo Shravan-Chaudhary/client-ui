@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const SigninCard = () => {
-    //TODO: Add toast for success and error messages
     const router = useRouter();
     const [state, formAction] = useFormState(login, initialState);
     const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +29,7 @@ const SigninCard = () => {
 
     useEffect(() => {
         if (state?.type === "success") {
-            successToast(state.message || "Signed in successfully!");
+            successToast(state.message || "Signed in!");
         } else if (state?.type === "error") {
             errorToast(state.message || "An error occurred. Please try again.");
         }
