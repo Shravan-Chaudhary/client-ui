@@ -16,7 +16,7 @@ export interface User {
     lastName: string;
     email: string;
     role: Roles.ADMIN | Roles.MANAGER | Roles.CUSTOMER;
-    // tenant: number | null;
+    tenant?: number | null;
 }
 
 export const getSession = async () => {
