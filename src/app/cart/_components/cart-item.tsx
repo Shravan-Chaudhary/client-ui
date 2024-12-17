@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { decrementCartItem, CartItem as ICartItem, incrementCartItem } from "@/lib/store/features/cart/cartSlice";
+import {
+    decrementCartItem,
+    deleteCartItem,
+    CartItem as ICartItem,
+    incrementCartItem,
+} from "@/lib/store/features/cart/cartSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
@@ -19,6 +24,11 @@ const CartItem: FC<Props> = ({ cartItem }) => {
     const handleDecrement = () => {
         dispatch(decrementCartItem(cartItem));
     };
+
+    const handleDelete = () => {
+        dispatch(deleteCartItem(cartItem));
+    };
+
     return (
         // Image
         // Name and Config
@@ -50,8 +60,9 @@ const CartItem: FC<Props> = ({ cartItem }) => {
                     size="icon"
                     className="size-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 focus-visible:bg-primary-foreground/20 focus-visible:ring-offset-primary"
                     aria-label="Decrease quantity"
+                    onClick={handleDecrement}
                 >
-                    <Minus className="size-4" onClick={handleDecrement} />
+                    <Minus className="size-4" />
                 </Button>
                 <p className="w-8 text-center text-sm font-semibold text-primary-foreground" aria-live="polite">
                     {cartItem.qty}
@@ -61,8 +72,9 @@ const CartItem: FC<Props> = ({ cartItem }) => {
                     size="icon"
                     className="size-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 focus-visible:bg-primary-foreground/20 focus-visible:ring-offset-primary"
                     aria-label="Increase quantity"
+                    onClick={handleIncrement}
                 >
-                    <Plus className="size-4" onClick={handleIncrement} />
+                    <Plus className="size-4" />
                 </Button>
             </div>
 
@@ -74,6 +86,7 @@ const CartItem: FC<Props> = ({ cartItem }) => {
                     size="icon"
                     className="size-8 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary"
                     aria-label="Delete item"
+                    onClick={handleDelete}
                 >
                     <Trash2 className="size-5" />
                 </Button>

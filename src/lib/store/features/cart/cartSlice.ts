@@ -59,10 +59,20 @@ export const cartSlice = createSlice({
                 window.localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
             }
         },
+
+        deleteCartItem: (state, action: PayloadAction<CartItem>) => {
+            const itemHash = action.payload.hash;
+            const itemIndex = state.cartItems.findIndex((item) => item.hash === itemHash);
+
+            if (itemIndex !== -1) {
+                state.cartItems.splice(itemIndex, 1);
+                window.localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+            }
+        },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart, setIntitialCart, incrementCartItem, decrementCartItem } = cartSlice.actions;
+export const { addToCart, setIntitialCart, incrementCartItem, decrementCartItem, deleteCartItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
