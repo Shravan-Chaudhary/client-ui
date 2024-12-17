@@ -1,9 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { decrementCartItem, CartItem as ICartItem, incrementCartItem } from "@/lib/store/features/cart/cartSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { FC } from "react";
 
-const CartItem = () => {
+interface Props {
+    cartItem: ICartItem;
+}
+
+const CartItem: FC<Props> = ({ cartItem }) => {
+    const dispatch = useAppDispatch();
+
+    const handleIncrement = () => {
+        dispatch(incrementCartItem(cartItem));
+    };
+
+    const handleDecrement = () => {
+        dispatch(decrementCartItem(cartItem));
+    };
     return (
         // Image
         // Name and Config
@@ -15,9 +30,17 @@ const CartItem = () => {
             </div>
             {/* Name, Config */}
             <div className="flex flex-col">
-                <h4 className="text-sm font-medium md:text-base">Mushroom Pizza</h4>
-                <p className="text-xs text-neutral-500 md:text-sm">Small, Thin</p>
-                <p className="text-xs text-neutral-500 md:text-sm">Cheese</p>
+                <h4 className="text-sm font-medium md:text-base">{cartItem.name}</h4>
+                <p className="text-xs text-neutral-500 md:text-sm">
+                    {Object.values(cartItem.selectedConfig.selectedPriceConfig)
+                        .map((value) => value)
+                        .join(", ")}
+                </p>
+                <p className="text-xs text-neutral-500 md:text-sm">
+                    {Object.values(cartItem.selectedConfig.selectedToppings)
+                        .map((value) => value.name)
+                        .join(", ")}
+                </p>
             </div>
 
             {/* Quantity & Increment, Decrement */}
@@ -28,10 +51,10 @@ const CartItem = () => {
                     className="size-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 focus-visible:bg-primary-foreground/20 focus-visible:ring-offset-primary"
                     aria-label="Decrease quantity"
                 >
-                    <Minus className="size-4" />
+                    <Minus className="size-4" onClick={handleDecrement} />
                 </Button>
                 <p className="w-8 text-center text-sm font-semibold text-primary-foreground" aria-live="polite">
-                    2
+                    {cartItem.qty}
                 </p>
                 <Button
                     variant="ghost"
@@ -39,7 +62,7 @@ const CartItem = () => {
                     className="size-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 focus-visible:bg-primary-foreground/20 focus-visible:ring-offset-primary"
                     aria-label="Increase quantity"
                 >
-                    <Plus className="size-4" />
+                    <Plus className="size-4" onClick={handleIncrement} />
                 </Button>
             </div>
 
