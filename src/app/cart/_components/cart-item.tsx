@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useTotal } from "@/lib/hooks/useTotal";
 import {
     decrementCartItem,
     deleteCartItem,
@@ -28,6 +29,8 @@ const CartItem: FC<Props> = ({ cartItem }) => {
     const handleDelete = () => {
         dispatch(deleteCartItem(cartItem));
     };
+
+    const totalItemPrice = useTotal(cartItem);
 
     return (
         // Image
@@ -80,7 +83,7 @@ const CartItem: FC<Props> = ({ cartItem }) => {
 
             {/* Price & Delete */}
             <div className="flex items-center justify-center gap-5">
-                <p className="text-base font-semibold md:text-lg">&#8377;800</p>
+                <p className="text-base font-semibold md:text-lg">&#8377;{totalItemPrice * cartItem.qty}</p>
                 <Button
                     variant="outline"
                     size="icon"
