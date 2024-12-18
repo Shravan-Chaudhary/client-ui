@@ -61,6 +61,18 @@ export const getMininumPrice = (product: Product): number => {
     return basePrice;
 };
 
+export const getItemTotal = (product: CartItem) => {
+    const toppingsTotal = product.selectedConfig.selectedToppings.reduce((acc, topping) => acc + topping.price, 0);
+    const priceConfigTotal = Object.entries(product.selectedConfig.selectedPriceConfig).reduce(
+        (acc, [key, value]: [string, string]) => {
+            const price = product.priceConfiguration[key].availableOptions[value];
+            return acc + price;
+        },
+        0
+    );
+    return toppingsTotal + priceConfigTotal;
+};
+
 export const addToCartToast = () => {
     toast.success("Added To Cart", {
         position: "top-center",

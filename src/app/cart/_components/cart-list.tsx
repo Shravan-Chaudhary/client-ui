@@ -1,13 +1,14 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CartItem from "./cart-item";
 import { Separator } from "@/components/ui/separator";
 import MobileCartItem from "./mobile-cart-item";
 import CheckoutButton from "./checkout-button";
 import Link from "next/link";
 import { useAppSelector } from "@/lib/store/hooks";
+import { getItemTotal } from "@/lib/utils";
 // import { useSearchParams } from "next/navigation";
 
 const CartList = () => {
@@ -19,6 +20,13 @@ const CartList = () => {
     }, []);
 
     const cart = useAppSelector((state) => state.cart.cartItems);
+
+    const grandTotal = useMemo(() => {
+        return cart.reduce((acc, item) => {
+            return getItemTotal(item) * item.qty + acc;
+        }, 0);
+    }, [cart]);
+
     if (!isClient) {
         return null;
     }
@@ -41,7 +49,7 @@ const CartList = () => {
             <Separator className="my-4" />
             {/* Price and Checkout */}
             <div className="mt-6 flex items-center justify-between">
-                <p className="text-base font-semibold md:text-lg">&#8377;2000</p>
+                <p className="text-base font-semibold md:text-lg">&#8377;{grandTotal}</p>
                 <Link href={"/checkout"}>
                     <CheckoutButton />
                 </Link>
