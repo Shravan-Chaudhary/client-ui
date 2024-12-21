@@ -5,11 +5,14 @@ import OrderSummaryCard from "./_components/order-summary-card";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
-const CheckoutPage = async () => {
+export default async function CheckoutPage({ searchParams }: { searchParams: { restaurantId: string } }) {
     const session = await getSession();
 
+    const queryString = new URLSearchParams(searchParams).toString();
+    console.log(queryString);
+
     if (!session) {
-        redirect("/sign-in");
+        redirect(`/sign-in?${queryString}`);
     }
 
     return (
@@ -24,6 +27,4 @@ const CheckoutPage = async () => {
             </div>
         </MaxWidthWrapper>
     );
-};
-
-export default CheckoutPage;
+}

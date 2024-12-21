@@ -9,10 +9,15 @@ import CheckoutButton from "./checkout-button";
 import Link from "next/link";
 import { useAppSelector } from "@/lib/store/hooks";
 import { getItemTotal } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 // import { useSearchParams } from "next/navigation";
 
 const CartList = () => {
-    // const searchParams = useSearchParams();
+    const searchParmas = useSearchParams().get("restaurantId");
+    let params = `restaurantId=${searchParmas}`;
+    if (!searchParmas) {
+        params = "";
+    }
     const [isClient, setIsClient] = useState<boolean>(false);
 
     useEffect(() => {
@@ -40,17 +45,17 @@ const CartList = () => {
             {/*   Cart Item  */}
             {/* Divider */}
             {cart.map((item) => (
-                <>
+                <div key={item.hash}>
                     <CartItem key={item.hash} cartItem={item} />
                     <Separator className="my-4" />
-                </>
+                </div>
             ))}
             <MobileCartItem />
             <Separator className="my-4" />
             {/* Price and Checkout */}
             <div className="mt-6 flex items-center justify-between">
                 <p className="text-base font-semibold md:text-lg">&#8377;{grandTotal}</p>
-                <Link href={"/checkout"}>
+                <Link href={`/checkout?${params}`}>
                     <CheckoutButton />
                 </Link>
             </div>
