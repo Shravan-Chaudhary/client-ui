@@ -11,7 +11,7 @@ import { useFormState } from "react-dom";
 import login from "@/lib/actions/login";
 import SignInButton from "./sign-in-button";
 import { errorToast, successToast } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const initialState = {
     type: "",
@@ -20,11 +20,14 @@ const initialState = {
 
 const SigninCard = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const returnTo = searchParams.get("return-to");
     const [state, formAction] = useFormState(login, initialState);
     const [showPassword, setShowPassword] = useState(false);
 
     if (state?.type === "success") {
-        router.push("/");
+        if (returnTo) router.push(`${returnTo}`);
+        else router.push("/");
     }
 
     useEffect(() => {

@@ -44,7 +44,6 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
             if (!res.ok) {
                 return;
             }
-            console.log(await res.json());
         } catch (error) {
             console.error("Error refreshing tokens", error);
         }

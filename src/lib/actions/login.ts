@@ -8,7 +8,8 @@ const login = async (prevState: unknown, formData: FormData) => {
 
     //TODO: Validation
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/login`, {
+        // TODO: Use env for backend url
+        const response = await fetch(`http://localhost:5501/api/v1/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -8,11 +8,13 @@ import { redirect } from "next/navigation";
 export default async function CheckoutPage({ searchParams }: { searchParams: { restaurantId: string } }) {
     const session = await getSession();
 
-    const queryString = new URLSearchParams(searchParams).toString();
-    console.log(queryString);
+    const sParams = new URLSearchParams(searchParams);
+    const existingQueryString = sParams.toString();
+
+    sParams.append("return-to", `/checkout?${existingQueryString}`);
 
     if (!session) {
-        redirect(`/sign-in?${queryString}`);
+        redirect(`/sign-in?${sParams.toString()}`);
     }
 
     return (

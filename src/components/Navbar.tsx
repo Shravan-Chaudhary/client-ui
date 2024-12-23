@@ -11,7 +11,8 @@ import LogoutButton from "./logout-button";
 
 const Navbar = async () => {
     const session = await getSession();
-    const restaurantsResponse = await fetch(process.env.BACKEND_URL + "/api/v1/auth/tenants", {
+    // TODO: change base url to env variable
+    const restaurantsResponse = await fetch("http://localhost:5501/api/v1/auth/tenants", {
         next: {
             revalidate: ONE_HOUR_IN_SEC,
         },
