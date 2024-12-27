@@ -5,11 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getCustomer } from "@/lib/http/api";
+import { Customer } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { CoinsIcon, Plus } from "lucide-react";
 
 const CustomerDetailsCard = () => {
-    const { data: customer, isLoading } = useQuery({
+    const { data: customer, isLoading } = useQuery<Customer>({
         queryKey: ["customer"],
         queryFn: async () => {
             const response = await getCustomer();
@@ -19,6 +20,10 @@ const CustomerDetailsCard = () => {
 
     if (isLoading) {
         return <div>Loading...</div>;
+    }
+
+    if (!customer) {
+        return <div>No customer found</div>;
     }
 
     return (
@@ -91,23 +96,24 @@ const CustomerDetailsCard = () => {
                             Add New Address
                         </Button>
                     </div>
-                    <RadioGroup defaultValue="hello" className="flex flex-col items-center gap-4 sm:flex-row lg:gap-5">
-                        <div className="rounded-lg border-2 bg-white px-6 py-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary">
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="hello" id="hello" className="border-primary text-primary" />
-                                <Label htmlFor="hello" className="grow cursor-pointer">
-                                    Hello
-                                </Label>
+                    <RadioGroup defaultValue="option-one" className="mt-2 grid grid-cols-2 gap-6">
+                        {customer.addresses.map((address) => (
+                            <div
+                                key={address.text}
+                                className="rounded-lg border-2 bg-white px-6 py-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
+                            >
+                                <div className="flex items-center space-x-2">
+                                    <RadioGroupItem
+                                        value="option-one"
+                                        id="option-one"
+                                        className="border-primary text-primary"
+                                    />
+                                    <Label htmlFor="hello" className="grow cursor-pointer">
+                                        {address.text}
+                                    </Label>
+                                </div>
                             </div>
-                        </div>
-                        <div className="rounded-lg border-2 bg-white px-6 py-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary">
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="world" id="world" className="border-primary text-primary" />
-                                <Label htmlFor="world" className="grow cursor-pointer">
-                                    World
-                                </Label>
-                            </div>
-                        </div>
+                        ))}
                     </RadioGroup>
                 </div>
 
