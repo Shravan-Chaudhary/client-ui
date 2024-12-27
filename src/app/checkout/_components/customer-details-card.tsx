@@ -4,9 +4,23 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { getCustomer } from "@/lib/http/api";
+import { useQuery } from "@tanstack/react-query";
 import { CoinsIcon, Plus } from "lucide-react";
 
 const CustomerDetailsCard = () => {
+    const { data: customer, isLoading } = useQuery({
+        queryKey: ["customer"],
+        queryFn: async () => {
+            const response = await getCustomer();
+            return response.data.data.customer;
+        },
+    });
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <Card className="flex w-full flex-col justify-between rounded-3xl border-none">
             <CardContent className="mt-5">
@@ -15,7 +29,15 @@ const CustomerDetailsCard = () => {
                     <div className="space-y-2">
                         <Label htmlFor="firstName">First Name</Label>
                         <div className="relative">
-                            <Input id="firstName" name="firstName" required type="text" className="" />
+                            <Input
+                                id="firstName"
+                                name="firstName"
+                                required
+                                type="text"
+                                className=""
+                                defaultValue={customer.firstName}
+                                disabled
+                            />
                             <Button
                                 type="button"
                                 variant="ghost"
@@ -28,7 +50,15 @@ const CustomerDetailsCard = () => {
                     <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name</Label>
                         <div className="relative">
-                            <Input id="lastName" name="lastName" required type="text" className="" />
+                            <Input
+                                id="lastName"
+                                name="lastName"
+                                required
+                                type="text"
+                                className=""
+                                defaultValue={customer.lastName}
+                                disabled
+                            />
                             <Button
                                 type="button"
                                 variant="ghost"
@@ -40,7 +70,15 @@ const CustomerDetailsCard = () => {
 
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" required type="email" className="pl-10" />
+                        <Input
+                            id="email"
+                            name="email"
+                            required
+                            type="email"
+                            className=""
+                            defaultValue={customer.email}
+                            disabled
+                        />
                     </div>
                 </form>
 
