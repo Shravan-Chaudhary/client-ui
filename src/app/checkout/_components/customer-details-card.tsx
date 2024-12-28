@@ -7,7 +7,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getCustomer } from "@/lib/http/api";
 import { Customer } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { CoinsIcon, Plus } from "lucide-react";
+import { CoinsIcon } from "lucide-react";
+import AddAddress from "./add-address";
 
 const CustomerDetailsCard = () => {
     const { data: customer, isLoading } = useQuery<Customer>({
@@ -88,14 +89,11 @@ const CustomerDetailsCard = () => {
                 </form>
 
                 {/* Address Section */}
-                <div className="mt-4 flex flex-col gap-1 sm:mt-6 sm:gap-2">
-                    <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold">Address</h3>
-                        <Button variant={"link"} size={"sm"}>
-                            <Plus className="mr-1 size-4" />
-                            Add New Address
-                        </Button>
-                    </div>
+                <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">Address</h3>
+                    <AddAddress />
+                </div>
+                <div className="mt-4 flex w-full flex-col gap-1 sm:mt-6 sm:gap-2">
                     <RadioGroup defaultValue="option-one" className="mt-2 grid grid-cols-2 gap-6">
                         {customer.addresses.map((address) => (
                             <div
