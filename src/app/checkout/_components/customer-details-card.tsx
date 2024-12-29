@@ -91,7 +91,7 @@ const CustomerDetailsCard = () => {
                 {/* Address Section */}
                 <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">Address</h3>
-                    <AddAddress />
+                    <AddAddress customerId={customer._id} />
                 </div>
                 <div className="mt-4 flex w-full flex-col gap-1 sm:mt-6 sm:gap-2">
                     <RadioGroup defaultValue="option-one" className="mt-2 grid grid-cols-2 gap-6">
