@@ -1,4 +1,7 @@
 "use client";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,9 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { LoaderCircle, Plus } from "lucide-react";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 interface ErrorResponse {
     message: string;
@@ -32,7 +32,7 @@ const formSchema = z.object({
     }),
 });
 
-const AddAddress = ({ customerId }: { customerId: string }) => {
+const AddAddress = ({ customerId }: { customerId: string | undefined }) => {
     const [open, setOpen] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
 
@@ -45,7 +45,8 @@ const AddAddress = ({ customerId }: { customerId: string }) => {
     const { mutate, isPending } = useMutation({
         mutationKey: ["addAddress"],
         mutationFn: async (address: string) => {
-            return await addAddress(customerId, address);
+            // TODO: fix customerId type
+            return await addAddress(customerId!, address);
         },
         onSuccess: () => {
             setOpen(false);
