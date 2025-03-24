@@ -1,10 +1,9 @@
-import React from "react";
 import Pill from "@/components/pill";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import pizza from "@/images/pizza.png";
 import { Pizza } from "lucide-react";
 import Image from "next/image";
-import pizza from "@/images/pizza.png";
+import Link from "next/link";
 
 const HeroSection = () => {
     return (

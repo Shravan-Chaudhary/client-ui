@@ -1,12 +1,12 @@
+import Navbar from "@/components/navbar";
+import Refresher from "@/components/refresher";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
+import ReactQueryProvider from "./providers/react-query-provider";
 import StoreProvider from "./providers/store-provider";
 import ToastProvider from "./providers/toast-provider";
-import Refresher from "@/components/refresher";
-import ReactQueryProvider from "./providers/react-query-provider";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
