@@ -1,13 +1,13 @@
 import React from "react";
-import MaxWidthWrapper from "./max-width-wrapper";
+import MaxWidthWrapper from "../max-width-wrapper";
 import Link from "next/link";
-import { Button, buttonVariants } from "./ui/button";
-import TenantSelector from "./tenant-selector";
+import { Button, buttonVariants } from "../ui/button";
+import TenantSelector from "../tenant-selector";
 import { Restaurant } from "@/types";
 import { ONE_HOUR_IN_SEC } from "@/constants";
-import CartIcon from "./cart-icon";
+import CartIcon from "../cart-icon";
 import { getSession } from "@/lib/session";
-import LogoutButton from "./logout-button";
+import LogoutButton from "../logout-button";
 
 const Navbar = async () => {
     const session = await getSession();
