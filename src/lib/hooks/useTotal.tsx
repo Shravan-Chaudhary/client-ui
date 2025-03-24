@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { CartItem } from "../store/features/cart/cartSlice";
 import { getItemTotal } from "../utils";
+import { CartItem } from "@/types";
 
 export function useTotal(product: CartItem) {
     const totalPrice = useMemo(() => {

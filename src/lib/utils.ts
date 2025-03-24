@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { CartItem } from "./store/features/cart/cartSlice";
 import CryptoJs from "crypto-js";
 import { Bounce, toast } from "react-toastify";
 import { Product, Topping } from "@/app/(home)/types";
 import { PriceType } from "@/constants";
+import { CartItem } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

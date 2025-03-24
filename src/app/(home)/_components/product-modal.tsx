@@ -9,8 +9,9 @@ import { ShoppingCart } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { addToCart, CartItem } from "@/lib/store/features/cart/cartSlice";
+import { addToCart } from "@/lib/store/features/cart/cartSlice";
 import { addToCartToast, hashItem } from "@/lib/utils";
+import { CartItem } from "@/types";
 
 type PropTypes = { product: Product };
 type SelectedPriceConfig = {
