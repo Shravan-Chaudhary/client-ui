@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export const logout = async () => {
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/logout`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/api/v1/auth/logout`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${cookies().get("accessToken")?.value}`,

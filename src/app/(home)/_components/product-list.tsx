@@ -11,7 +11,7 @@ interface PropTypes {
 }
 
 const ProductList: React.FC<PropTypes> = async ({ searchParams }) => {
-    const categoryResponse = await fetch(process.env.BACKEND_URL + "/api/v1/inventory/categories", {
+    const categoryResponse = await fetch(process.env.BACKEND_URL + "/api/v1/inventory/api/v1/inventory/categories", {
         next: {
             revalidate: ONE_HOUR_IN_SEC,
         },
@@ -27,7 +27,7 @@ const ProductList: React.FC<PropTypes> = async ({ searchParams }) => {
     //TODO: Promise.all for fetching different categories products (OR)
     //TODO: fetch all products and filter them (Promise.all can be used to fetch products and categories in this case)
     const productsResponse = await fetch(
-        `${process.env.BACKEND_URL}/api/v1/inventory/products?tenantId=${searchParams.restaurantId}`,
+        `${process.env.BACKEND_URL}/api/v1/inventory/api/v1/inventory/products?tenantId=${searchParams.restaurantId}`,
         {
             next: {
                 revalidate: ONE_HOUR_IN_SEC,
