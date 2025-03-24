@@ -1,12 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useTotal } from "@/lib/hooks/useTotal";
-import {
-    decrementCartItem,
-    deleteCartItem,
-    CartItem as ICartItem,
-    incrementCartItem,
-} from "@/lib/store/features/cart/cartSlice";
+import { decrementCartItem, deleteCartItem, incrementCartItem } from "@/lib/store/features/cart/cartSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
+import { CartItem as ICartItem } from "@/types";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React, { FC } from "react";

@@ -1,17 +1,7 @@
-import { Product, Topping } from "@/app/(home)/types";
 import { hashItem } from "@/lib/utils";
+import { CartItem } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CartItem extends Pick<Product, "_id" | "name" | "image" | "priceConfiguration"> {
-    selectedConfig: {
-        selectedPriceConfig: {
-            [key: string]: string;
-        };
-        selectedToppings: Topping[];
-    };
-    qty: number;
-    hash?: string;
-}
 export interface CartState {
     cartItems: CartItem[];
 }

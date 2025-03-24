@@ -1,3 +1,5 @@
+import { Product, Topping } from "@/app/(home)/types";
+
 export type CustomizationOption = {
     value: string;
     label: string;
@@ -27,3 +29,14 @@ export type CouponData = {
     code: string;
     tenantId: string;
 };
+
+export interface CartItem extends Pick<Product, "_id" | "name" | "image" | "priceConfiguration"> {
+    selectedConfig: {
+        selectedPriceConfig: {
+            [key: string]: string;
+        };
+        selectedToppings: Topping[];
+    };
+    qty: number;
+    hash?: string;
+}

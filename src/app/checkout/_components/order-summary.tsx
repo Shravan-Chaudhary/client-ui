@@ -28,7 +28,7 @@ const OrderSummary = () => {
     }, [cart]);
 
     const discountAmount = useMemo(() => {
-        return Math.round((subTotal * discountPercentage) / 100);
+        return (subTotal * discountPercentage) / 100;
     }, [subTotal, discountPercentage]);
 
     const taxesAmount = useMemo(() => {
@@ -129,7 +129,7 @@ const OrderSummary = () => {
                                 ref={couponCodeRef}
                             />
 
-                            {discountError && <span className="ml-2 text-xs text-red-500">{discountError}</span>}
+                            {discountError && <span className="text-xs text-red-500 ">{discountError}</span>}
                         </div>
                         <Button
                             variant={"secondary"}
