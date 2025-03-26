@@ -25,7 +25,7 @@ export const getSession = async () => {
 
 export const getSelf = async (): Promise<Session | null> => {
     // TODO: Use env for backend url
-    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/api/v1/auth/self`, {
+    const response = await fetch(`https://api.epicfood.live/api/v1/auth/api/v1/auth/self`, {
         headers: {
             Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
         },

@@ -12,7 +12,7 @@ import LogoutButton from "../logout-button";
 const Navbar = async () => {
     const session = await getSession();
     // TODO: change base url to env variable
-    const restaurantsResponse = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/api/v1/auth/tenants`, {
+    const restaurantsResponse = await fetch(`https://api.epicfood.live/api/v1/auth/api/v1/auth/tenants`, {
         next: {
             revalidate: ONE_HOUR_IN_SEC,
         },

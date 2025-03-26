@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import cookie from "cookie";
 
 export async function POST() {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/api/v1/auth/refresh`, {
+    const response = await fetch(`https://api.epicfood.live/api/v1/auth/api/v1/auth/refresh`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${cookies().get("accessToken")?.value}`,

@@ -9,7 +9,7 @@ const login = async (prevState: unknown, formData: FormData) => {
     //TODO: Validation
     try {
         // TODO: Use env for backend url
-        const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/api/v1/auth/login`, {
+        const response = await fetch(`https://api.epicfood.live/api/v1/auth/api/v1/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
