@@ -9,8 +9,15 @@ import { useMutation } from "@tanstack/react-query";
 import { verifyCoupon } from "@/lib/http/api";
 import { useSearchParams } from "next/navigation";
 import { CouponData } from "@/types";
+import { LoaderCircle } from "lucide-react";
 
-const OrderSummary = ({ handleCouponCodeChange }: { handleCouponCodeChange: (code: string) => void }) => {
+const OrderSummary = ({
+    isPlaceOrderPending,
+    handleCouponCodeChange,
+}: {
+    isPlaceOrderPending: boolean;
+    handleCouponCodeChange: (code: string) => void;
+}) => {
     const searchParam = useSearchParams();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [discountPercentage, setDiscountPercentage] = useState(0);
@@ -143,7 +150,17 @@ const OrderSummary = ({ handleCouponCodeChange }: { handleCouponCodeChange: (cod
                         </Button>
                     </div>
                     <div className="mt-4 flex justify-end">
-                        <Button>Place Order</Button>
+                        <Button disabled={isPlaceOrderPending}>
+                            {isPlaceOrderPending ? (
+                                <span className="flex items-center gap-2">
+                                    <LoaderCircle className="animate-spin">
+                                        <span>Placing Order...</span>
+                                    </LoaderCircle>
+                                </span>
+                            ) : (
+                                <span>Place Order</span>
+                            )}
+                        </Button>
                     </div>
                 </div>
             </CardContent>
