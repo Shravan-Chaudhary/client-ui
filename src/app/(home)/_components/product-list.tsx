@@ -51,15 +51,21 @@ const ProductList: React.FC<PropTypes> = async ({ searchParams }) => {
                 ))}
             </TabsList>
 
-            {categories.map((category) => (
-                <TabsContent key={category._id} value={category._id}>
-                    <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                        {products.map((product) => {
-                            return <ProductCard key={product._id} product={product} />;
-                        })}
-                    </div>
-                </TabsContent>
-            ))}
+            {searchParams.restaurantId ? (
+                categories.map((category) => (
+                    <TabsContent key={category._id} value={category._id}>
+                        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            {products.map((product) => {
+                                return <ProductCard key={product._id} product={product} />;
+                            })}
+                        </div>
+                    </TabsContent>
+                ))
+            ) : (
+                <span className="mt-6 block text-lg font-semibold text-neutral-800">
+                    Select a city for products to show
+                </span>
+            )}
         </Tabs>
     );
 };
