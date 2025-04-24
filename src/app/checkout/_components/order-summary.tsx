@@ -10,7 +10,7 @@ import { verifyCoupon } from "@/lib/http/api";
 import { useSearchParams } from "next/navigation";
 import { CouponData } from "@/types";
 
-const OrderSummary = () => {
+const OrderSummary = ({ handleCouponCodeChange }: { handleCouponCodeChange: (code: string) => void }) => {
     const searchParam = useSearchParams();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [discountPercentage, setDiscountPercentage] = useState(0);
@@ -61,10 +61,12 @@ const OrderSummary = () => {
 
             if (data.data.valid) {
                 setDiscountError("");
+                handleCouponCodeChange(couponCodeRef.current ? couponCodeRef.current.value : "");
                 setDiscountPercentage(data.data.discount);
                 return;
             }
             setDiscountError(data.message);
+            handleCouponCodeChange("");
             setDiscountPercentage(0);
         },
 

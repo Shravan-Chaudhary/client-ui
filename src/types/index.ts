@@ -40,3 +40,13 @@ export interface CartItem extends Pick<Product, "_id" | "name" | "image" | "pric
     qty: number;
     hash?: string;
 }
+
+export type OrderData = {
+    cart: CartItem[];
+    couponCode: string;
+    tenantId: string;
+    customerId: string;
+    comment?: string;
+    address: string;
+    paymentMode: string;
+};

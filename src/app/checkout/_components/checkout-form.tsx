@@ -1,19 +1,23 @@
 "use client";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { getCustomer } from "@/lib/http/api";
-import { Customer } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { createOrder, getCustomer } from "@/lib/http/api";
+import { Customer, OrderData } from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { CoinsIcon } from "lucide-react";
 import AddAddress from "./add-address";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import OrderSummary from "./order-summary";
+import { useAppSelector } from "@/lib/store/hooks";
+import { useRef } from "react";
+import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
     address: z.string({ required_error: "Select an address" }),
@@ -25,6 +29,11 @@ const CheckoutForm = () => {
         resolver: zodResolver(formSchema),
     });
 
+    const cart = useAppSelector((state) => state.cart);
+    const chosenCouponCode = useRef("");
+    const idempotencyKeyRef = useRef("");
+    const searchParams = useSearchParams();
+
     const { data: customer, isLoading } = useQuery<Customer>({
         queryKey: ["customer"],
         queryFn: async () => {
@@ -33,8 +42,33 @@ const CheckoutForm = () => {
         },
     });
 
+    const { mutate } = useMutation({
+        mutationKey: ["order"],
+        mutationFn: async (data: OrderData) => {
+            const idempotencyKey = idempotencyKeyRef.current
+                ? idempotencyKeyRef.current
+                : (idempotencyKeyRef.current = uuidv4() + customer?._id);
+            await createOrder(data, idempotencyKey);
+        },
+        retry: 3,
+    });
+
     const handlePlaceOrder = (data: z.infer<typeof formSchema>) => {
         console.log(data);
+        const tenantId = searchParams.get("restaurantId");
+        if (!tenantId) {
+            alert("Restaurant Id is required");
+            return;
+        }
+        const orderData: OrderData = {
+            cart: cart.cartItems,
+            couponCode: chosenCouponCode.current ? chosenCouponCode.current : "",
+            tenantId: tenantId,
+            customerId: customer ? customer?._id : "",
+            address: data.address,
+            paymentMode: data.paymentMode,
+        };
+        mutate(orderData);
     };
 
     if (isLoading) {
@@ -238,7 +272,11 @@ const CheckoutForm = () => {
                     </div>
                     {/* ORder Summary */}
                     <div className="lg:col-span-5">
-                        <OrderSummary />
+                        <OrderSummary
+                            handleCouponCodeChange={(code) => {
+                                chosenCouponCode.current = code;
+                            }}
+                        />
                     </div>
                 </div>
             </form>

@@ -1,7 +1,8 @@
-import { CouponData } from "@/types";
+import { CouponData, OrderData } from "@/types";
 import axios from "axios";
 
 export const api = axios.create({
+    //TODO: change this to production url
     baseURL: "https://api.epicfood.live",
     withCredentials: true,
     headers: {
@@ -17,3 +18,10 @@ export const addAddress = async (customerId: string, address: string) =>
         address,
     });
 export const verifyCoupon = async (data: CouponData) => api.post(`${ORDER_SERVICE_PREFIX}/coupons/verify`, data);
+
+export const createOrder = (data: OrderData, idempotencyKey: string) =>
+    api.post(`${ORDER_SERVICE_PREFIX}/orders`, data, {
+        headers: {
+            "Idempotency-Key": idempotencyKey,
+        },
+    });
