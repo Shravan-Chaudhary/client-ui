@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, CheckCircle2, CircleX, LayoutDashboard, Store } from "lucide-react";
 import Link from "next/link";
 
-const Payment = ({ searchParams }: { searchParams: { success: string; orderId: string } }) => {
+const Payment = ({ searchParams }: { searchParams: { success: string; orderId: string; restaurantId: string } }) => {
     const isOrderSuccess = searchParams.success === "true";
     return (
         <div className="mt-32 flex w-full flex-col items-center gap-4">
@@ -54,14 +54,17 @@ const Payment = ({ searchParams }: { searchParams: { success: string; orderId: s
             )}
             {isOrderSuccess ? (
                 <Button asChild className="mt-6">
-                    <Link href={`/order-status/${searchParams.orderId}`} className="flex gap-2">
+                    <Link
+                        href={`/order-status/${searchParams.orderId}?restaurantId=${searchParams.restaurantId}`}
+                        className="flex gap-2"
+                    >
                         <ArrowLeft size={20} className="text-white" />
                         <span>Go to order status page</span>
                     </Link>
                 </Button>
             ) : (
                 <Button asChild className="mt-6">
-                    <Link href={"/checkout"} className="flex gap-2">
+                    <Link href={`/checkout?restaurantId=${searchParams.restaurantId}`} className="flex gap-2">
                         <ArrowLeft size={20} className="text-white" />
                         <span>Go to checkout</span>
                     </Link>
