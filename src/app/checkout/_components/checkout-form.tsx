@@ -15,9 +15,10 @@ import AddAddress from "./add-address";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import OrderSummary from "./order-summary";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { clearCart } from "@/lib/store/features/cart/cartSlice";
 
 const formSchema = z.object({
     address: z.string({ required_error: "Select an address" }),
@@ -30,6 +31,7 @@ const CheckoutForm = () => {
     });
 
     const cart = useAppSelector((state) => state.cart);
+    const dispatch = useAppDispatch();
     const chosenCouponCode = useRef("");
     const idempotencyKeyRef = useRef("");
     const searchParams = useSearchParams();
@@ -54,6 +56,7 @@ const CheckoutForm = () => {
         onSuccess: (data: { paymentUrl: string | null }) => {
             if (data.paymentUrl) window.location.href = data.paymentUrl;
             alert("Order placed successfully");
+            dispatch(clearCart());
         },
     });
 
