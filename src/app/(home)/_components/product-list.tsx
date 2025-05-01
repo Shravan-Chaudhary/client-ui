@@ -40,6 +40,7 @@ const ProductList: React.FC<PropTypes> = async ({ searchParams }) => {
     }
 
     const products: Product[] = await productsResponse.json().then((response) => response.data.docs);
+    console.log("products", products);
 
     return (
         <Tabs defaultValue={categories[0]._id} className="">
