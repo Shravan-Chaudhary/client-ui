@@ -74,6 +74,7 @@ const CheckoutForm = () => {
             customerId: customer ? customer?._id : "",
             address: data.address,
             paymentMode: data.paymentMode,
+            comment: "Make it fast",
         };
         mutate(orderData);
     };
