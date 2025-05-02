@@ -22,6 +22,6 @@ export const verifyCoupon = async (data: CouponData) => api.post(`${ORDER_SERVIC
 export const createOrder = (data: OrderData, idempotencyKey: string) =>
     api.post(`${ORDER_SERVICE_PREFIX}/orders`, data, {
         headers: {
-            "Idempotency-Key": idempotencyKey,
+            "idempotency-key": idempotencyKey,
         },
     });
