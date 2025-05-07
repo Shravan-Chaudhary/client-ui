@@ -53,10 +53,19 @@ const CheckoutForm = () => {
             return await createOrder(data, idempotencyKey).then((res) => res.data);
         },
         retry: 3,
-        onSuccess: (data: { paymentUrl: string | null }) => {
-            if (data.paymentUrl) window.location.href = data.paymentUrl;
-            alert("Order placed successfully");
+        onSuccess: (response) => {
+            console.log("Full response:", response);
+            // Correct structure: data is nested inside response
+            const paymentUrl = response?.data?.paymentUrl;
+            console.log("Payment URL:", paymentUrl);
+
+            if (paymentUrl) window.location.href = paymentUrl;
             dispatch(clearCart());
+        },
+        onError: (error) => {
+            console.error("Order API error:", error);
+            console.error("Error response:", error.message);
+            alert(`Error placing order: ${error.message}`);
         },
     });
 
@@ -76,6 +85,7 @@ const CheckoutForm = () => {
             paymentMode: data.paymentMode,
             comment: "Make it fast",
         };
+        console.log(orderData);
         mutate(orderData);
     };
 

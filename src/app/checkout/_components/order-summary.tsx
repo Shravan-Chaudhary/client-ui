@@ -18,7 +18,7 @@ const OrderSummary = ({
     isPlaceOrderPending: boolean;
     handleCouponCodeChange: (code: string) => void;
 }) => {
-    const searchParam = useSearchParams();
+    const searchParams = useSearchParams();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [discountPercentage, setDiscountPercentage] = useState(0);
     const [discountError, setDiscountError] = useState("");
@@ -54,7 +54,7 @@ const OrderSummary = ({
     const { mutate, isPending } = useMutation({
         mutationKey: ["couponCode"],
         mutationFn: async () => {
-            const restaurantId = searchParam.get("restaurantId");
+            const restaurantId = searchParams.get("restaurantId");
             if (!couponCodeRef.current) return;
             if (!restaurantId) return;
             const couponData: CouponData = {
@@ -85,6 +85,11 @@ const OrderSummary = ({
 
     const handleCouponValidation = (e: React.MouseEvent) => {
         e.preventDefault();
+        const tenantId = searchParams.get("restaurantId");
+        if (!tenantId) {
+            alert("Restaurant Id is required");
+            return;
+        }
         mutate();
     };
 

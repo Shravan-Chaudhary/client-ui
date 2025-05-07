@@ -8,6 +8,7 @@ export const api = axios.create({
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
 });
 
@@ -23,5 +24,6 @@ export const createOrder = (data: OrderData, idempotencyKey: string) =>
     api.post(`${ORDER_SERVICE_PREFIX}/orders`, data, {
         headers: {
             "idempotency-key": idempotencyKey,
+            "Idempotency-Key": idempotencyKey,
         },
     });
