@@ -87,6 +87,10 @@ export const addToCartToast = () => {
     });
 };
 
+export const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 export const successToast = (message: string) => {
     toast.success(message, {
         position: "top-center",
