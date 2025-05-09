@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { Step, StepItem, Stepper } from "@/components/stepper";
+import React, { useEffect } from "react";
+import { Step, StepItem, Stepper, useStepper } from "@/components/stepper";
 import { CheckCheck, FileCheck, Microwave, Package, PackageCheck } from "lucide-react";
 
 const steps = [
@@ -11,12 +11,24 @@ const steps = [
     { label: "Delivered", icon: CheckCheck, description: "Order completed" },
 ] satisfies StepItem[];
 
+const StepperChanger = () => {
+    const { nextStep } = useStepper();
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            nextStep();
+        }, 2000);
+        return () => clearInterval(intervalId);
+    }, [nextStep]);
+    return <></>;
+};
+
 const OrderStatus = () => {
     return (
         <Stepper initialStep={0} steps={steps} variant="circle-alt" className="py-8">
             {steps.map(({ label, icon }) => {
                 return <Step key={label} label={label} checkIcon={icon} icon={icon}></Step>;
             })}
+            <StepperChanger />
         </Stepper>
     );
 };
