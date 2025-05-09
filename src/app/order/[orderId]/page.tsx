@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 
 const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
     const response = await fetch(
-        `${process.env.BACKEND_URL}/api/order/orders/${params.orderId}?fields=address,paymentStatus,paymentMode`,
+        `https://api.epicfood.live/api/v1/order/orders/api/v1/order/orders${params.orderId}?fields=address,paymentStatus,paymentMode`,
         {
             headers: {
                 Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
