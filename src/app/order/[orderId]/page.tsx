@@ -2,27 +2,28 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import OrderStatus from "@/app/order/_components/order-status";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
-import { Separator } from "@/components/ui/separator";
-import { Banknote, Coins, LayoutDashboard } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Order } from "@/types";
-import { cookies } from "next/headers";
+// import { Separator } from "@/components/ui/separator";
+// import { Banknote, Coins, LayoutDashboard } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+// import { Order } from "@/types";
+// import { cookies } from "next/headers";
 
-const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
-    const response = await fetch(
-        `https://api.epicfood.live/api/v1/order/api/v1/order/orders/${params.orderId}?fields=address,paymentStatus,paymentMode`,
-        {
-            headers: {
-                Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
-            },
-        }
-    );
+const SingleOrder = async () => {
+    // const response = await fetch(
+    //     `https://api.epicfood.live/api/v1/order/api/v1/order/orders/${params.orderId}?fields=address,paymentStatus,paymentMode`,
+    //     {
+    //         headers: {
+    //             Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
+    //         },
+    //     }
+    // );
 
-    if (!response.ok) {
-        console.log(response);
-        throw new Error("Failed to fetch single order");
-    }
-    const order: Order = await response.json();
+    // if (!response.ok) {
+    //     console.log(response);
+    //     throw new Error("Failed to fetch single order");
+    // }
+    // const order: Order = await response.json();
+    // console.log("oreder", order);
     return (
         <MaxWidthWrapper className="mb-8 mt-12 flex flex-col sm:mt-20">
             <Card>
@@ -35,7 +36,7 @@ const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
                     <OrderStatus />
                 </CardContent>
             </Card>
-            <div className="flex gap-6">
+            {/* <div className="flex gap-6">
                 <Card className="w-1/3">
                     <CardHeader className="p-4">
                         <CardTitle className="flex items-start justify-between gap-12 text-lg">
@@ -80,7 +81,7 @@ const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
                         </Button>
                     </CardContent>
                 </Card>
-            </div>
+            </div> */}
         </MaxWidthWrapper>
     );
 };
