@@ -9,14 +9,11 @@ import { Order } from "@/types";
 import { cookies } from "next/headers";
 
 const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
-    const response = await fetch(
-        `https://api.epicfood.live/api/v1/order/api/v1/order/orders/${params.orderId}?fields=address,paymentStatus,paymentMode`,
-        {
-            headers: {
-                Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
-            },
-        }
-    );
+    const response = await fetch(`https://api.epicfood.live/api/v1/order/api/v1/order/orders/${params.orderId}`, {
+        headers: {
+            Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
+        },
+    });
 
     if (!response.ok) {
         console.log(response);
