@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Order } from "@/types";
@@ -8,81 +5,68 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { cookies } from "next/headers";
 
-// Dummy orders for fallback
+// Server Component - no "use client" directive
 
-const Orders = () => {
-    const [orders, setOrders] = useState<Order[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    // TODO: Add pagination
-    // TODO: Make it server component for production
+async function getOrders() {
+    try {
+        const accessToken = cookies().get("accessToken")?.value;
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) {
+            throw new Error("No access token found");
+        }
 
-                if (!accessToken) {
-                    setError("No access token found");
-                    setLoading(false);
-                    return;
-                }
+        const response = await fetch(`https://api.epicfood.live/api/v1/order/api/v1/order/orders/mine`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            // Add next.js specific caching options
+            cache: "no-store", // Don't cache this request
+        });
 
-                const response = await fetch(`https://api.epicfood.live/api/v1/order/api/v1/order/orders/mine`, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                });
+        if (!response.ok) {
+            throw new Error(`Error fetching orders: ${response.status}`);
+        }
 
-                if (!response.ok) {
-                    throw new Error(`Error fetching orders: ${response.status}`);
-                }
+        const orderData = await response.json();
+        console.log("Orders response:", orderData);
 
-                const orderData = await response.json();
-                console.log("orders response:", orderData);
-
-                // Handle the specific API structure you described
-                if (orderData.success && orderData.data && orderData.data.orders) {
-                    // Access the orders array from data.orders
-                    setOrders(orderData.data.orders);
-                } else {
-                    // If we can't find the orders array, log the structure and use dummy data
-                    console.error("API response is not in expected format:", orderData);
-                    // Keep using dummy data from initial state
-                    setError("API returned data in unexpected format");
-                }
-            } catch (err) {
-                console.error("Failed to fetch orders:", err);
-                setError("Failed to fetch orders");
-                // Fallback to dummy data is already handled by the initial state
-            } finally {
-                setLoading(false);
-            }
+        // Handle the specific API structure
+        if (orderData.success && orderData.data && orderData.data.orders) {
+            // Access the orders array from data.orders
+            return {
+                orders: orderData.data.orders,
+                error: null,
+            };
+        } else {
+            // If we can't find the orders array, log the structure
+            console.error("API response is not in expected format:", orderData);
+            throw new Error("API returned data in unexpected format");
+        }
+    } catch (err) {
+        console.error("Failed to fetch orders:", err);
+        return {
+            orders: [],
+            error: err instanceof Error ? err.message : "Failed to fetch orders",
         };
-
-        fetchOrders();
-    }, []);
-
-    if (loading) {
-        return (
-            <MaxWidthWrapper className="mb-8 mt-12 flex flex-col items-center justify-center text-center sm:mt-20">
-                <h1 className="text-3xl font-bold">Loading orders...</h1>
-            </MaxWidthWrapper>
-        );
     }
+}
 
+export default async function Orders() {
+    const { orders, error } = await getOrders();
+
+    // Error state
     if (error) {
         return (
             <MaxWidthWrapper className="mb-8 mt-12 flex flex-col items-center justify-center text-center sm:mt-20">
                 <h1 className="text-3xl font-bold">Error fetching orders</h1>
                 <p className="mt-4 text-gray-500">{error}</p>
-                <p className="mt-2 text-gray-500">Showing dummy data instead</p>
             </MaxWidthWrapper>
         );
     }
 
-    // Additional safety check - if orders is not an array by this point
+    // Additional safety check - if orders is not an array
     if (!Array.isArray(orders)) {
         console.error("Orders is not an array:", orders);
         return (
@@ -125,7 +109,9 @@ const Orders = () => {
                                         <TableCell>{capitalizeFirstLetter(order.paymentMode)}</TableCell>
                                         <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
                                         <TableCell>
-                                            <Badge variant={"outline"}>{order.orderStatus.toUpperCase()}</Badge>
+                                            <Badge variant={"outline"}>
+                                                {capitalizeFirstLetter(order.orderStatus)}
+                                            </Badge>
                                         </TableCell>
                                         <TableCell>₹{order.total}</TableCell>
                                         <TableCell className="text-right">
@@ -142,6 +128,4 @@ const Orders = () => {
             </Card>
         </MaxWidthWrapper>
     );
-};
-
-export default Orders;
+}
