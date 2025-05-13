@@ -27,3 +27,7 @@ export const createOrder = (data: OrderData, idempotencyKey: string) =>
             "Idempotency-Key": idempotencyKey,
         },
     });
+
+export const getSingleOrder = async (orderId: string) => {
+    return api.get(`${ORDER_SERVICE_PREFIX}/orders/${orderId}`);
+};

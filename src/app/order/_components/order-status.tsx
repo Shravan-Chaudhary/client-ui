@@ -2,6 +2,9 @@
 import React, { useEffect } from "react";
 import { Step, StepItem, Stepper, useStepper } from "@/components/stepper";
 import { CheckCheck, FileCheck, Microwave, Package, PackageCheck } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getSingleOrder } from "@/lib/http/api";
+import { Order } from "@/types";
 
 const steps = [
     { label: "Received", icon: FileCheck, description: "We are confirming your order" },
@@ -11,24 +14,41 @@ const steps = [
     { label: "Delivered", icon: CheckCheck, description: "Order completed" },
 ] satisfies StepItem[];
 
-const StepperChanger = () => {
-    const { nextStep } = useStepper();
+const statusMapping = {
+    received: 0,
+    confirmed: 1,
+    prepared: 2,
+    out_for_delivery: 3,
+    delivered: 4,
+} as { [key: string]: number };
+
+const StepperChanger = ({ orderId }: { orderId: string }) => {
+    const { setStep } = useStepper();
+    const { data } = useQuery<Order>({
+        queryKey: ["orderStatus", orderId],
+        queryFn: async () => {
+            return await getSingleOrder(orderId).then((res) => res.data);
+        },
+        refetchInterval: 1000 * 30,
+    });
+
+    console.log("data", data);
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            nextStep();
-        }, 2000);
-        return () => clearInterval(intervalId);
-    }, [nextStep]);
+        if (data) {
+            const currentStatus = statusMapping[data.orderStatus] || 0;
+            setStep(currentStatus + 1);
+        }
+    }, [data]);
     return <></>;
 };
 
-const OrderStatus = () => {
+const OrderStatus = ({ orderId }: { orderId: string }) => {
     return (
         <Stepper initialStep={0} steps={steps} variant="circle-alt" className="py-8">
             {steps.map(({ label, icon }) => {
                 return <Step key={label} label={label} checkIcon={icon} icon={icon}></Step>;
             })}
-            <StepperChanger />
+            <StepperChanger orderId={orderId} />
         </Stepper>
     );
 };
