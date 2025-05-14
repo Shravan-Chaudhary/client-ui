@@ -1,61 +1,67 @@
 "use client";
 import React, { useCallback, useEffect, useRef } from "react";
 import * as jose from "jose";
+import { getAuthToken, refreshAuthToken } from "@/lib/cookies";
 
 const Refresher = ({ children }: { children: React.ReactNode }) => {
     const timeoutId = useRef<NodeJS.Timeout>();
-
-    const getAccessToken = async () => {
-        const res = await fetch("/api/auth/accessToken");
-        if (!res.ok) {
-            return;
-        }
-        const accessToken = await res.json();
-        return accessToken;
-    };
 
     const startRefresh = useCallback(async () => {
         if (timeoutId.current) {
             clearTimeout(timeoutId.current);
         }
         try {
-            const accessToken = await getAccessToken();
-            if (!accessToken) {
+            // Get the token using our standardized utility
+            const { token } = await getAuthToken();
+
+            if (!token) {
                 return;
             }
-            const token = jose.decodeJwt(accessToken.token);
-            const exp_in_ms = token.exp! * 1000;
+
+            // Decode the JWT to get expiration time
+            const decodedToken = jose.decodeJwt(token);
+            const exp_in_ms = decodedToken.exp! * 1000;
             const currentTime = Date.now();
+
+            // Schedule refresh 5 seconds before token expires
             const refreshTime = exp_in_ms - currentTime - 5000;
 
+            // Don't schedule if token is already expired or will expire too soon
+            if (refreshTime <= 0) {
+                // Token is already expired or about to expire, refresh now
+                await refreshTokenAndRestart();
+                return;
+            }
+
+            // Schedule token refresh
             timeoutId.current = setTimeout(() => {
-                refreshAccesstoken();
+                refreshTokenAndRestart();
             }, refreshTime);
         } catch (error: unknown) {
             console.error("Error refreshing tokens", error);
         }
     }, []);
 
-    const refreshAccesstoken = async () => {
+    const refreshTokenAndRestart = async () => {
         try {
-            const res = await fetch("/api/auth/refreshToken", {
-                method: "POST",
-            });
-            if (!res.ok) {
-                return;
-            }
+            // Use standardized utility to refresh token
+            await refreshAuthToken();
         } catch (error) {
             console.error("Error refreshing tokens", error);
         }
+        // Restart the process with the new token
         startRefresh();
     };
 
     useEffect(() => {
         startRefresh();
         return () => {
-            clearTimeout(timeoutId.current);
+            if (timeoutId.current) {
+                clearTimeout(timeoutId.current);
+            }
         };
-    }, [timeoutId, startRefresh]);
+    }, [startRefresh]);
+
     return <div>{children}</div>;
 };
 

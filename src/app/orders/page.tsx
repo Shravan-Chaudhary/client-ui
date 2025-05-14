@@ -6,12 +6,13 @@ import Link from "next/link";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cookies } from "next/headers";
+import { AUTH_TOKENS } from "@/lib/cookies";
 
 // Server Component - no "use client" directive
 
 async function getOrders() {
     try {
-        const accessToken = cookies().get("accessToken")?.value;
+        const accessToken = cookies().get(AUTH_TOKENS.ACCESS_TOKEN)?.value;
 
         if (!accessToken) {
             throw new Error("No access token found");

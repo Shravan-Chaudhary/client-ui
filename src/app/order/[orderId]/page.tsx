@@ -6,10 +6,11 @@ import { Separator } from "@/components/ui/separator";
 import { Banknote, Coins, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
+import { AUTH_TOKENS } from "@/lib/cookies";
 
 async function getOrder(orderId: string) {
     const cookieStore = cookies();
-    const accessToken = cookieStore.get("accessToken")?.value;
+    const accessToken = cookieStore.get(AUTH_TOKENS.ACCESS_TOKEN)?.value;
 
     if (!accessToken) {
         throw new Error("No access token found");

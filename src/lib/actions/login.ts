@@ -1,6 +1,7 @@
 "use server";
 // import cookie from "cookie";
 import { cookies } from "next/headers";
+import { AUTH_TOKENS, COOKIE_OPTIONS } from "@/lib/cookies";
 
 const login = async (prevState: unknown, formData: FormData) => {
     const email = formData.get("email") as string;
@@ -27,8 +28,8 @@ const login = async (prevState: unknown, formData: FormData) => {
         }
 
         const c = response.headers.getSetCookie();
-        const accessTokenHeader = c.find((cookie) => cookie.includes("accessToken"));
-        const refreshTokenHeader = c.find((cookie) => cookie.includes("refreshToken"));
+        const accessTokenHeader = c.find((cookie) => cookie.includes(AUTH_TOKENS.ACCESS_TOKEN));
+        const refreshTokenHeader = c.find((cookie) => cookie.includes(AUTH_TOKENS.REFRESH_TOKEN));
 
         if (!accessTokenHeader || !refreshTokenHeader) {
             return {
@@ -40,8 +41,8 @@ const login = async (prevState: unknown, formData: FormData) => {
         try {
             // Extract token value and expiry from cookie header string
             // Format example: "accessToken=xyz; Domain=epicfood.live; Path=/; HttpOnly; SameSite=Strict; Max-Age=3600"
-            const accessTokenMatch = accessTokenHeader.match(/^accessToken=([^;]+)/);
-            const refreshTokenMatch = refreshTokenHeader.match(/^refreshToken=([^;]+)/);
+            const accessTokenMatch = accessTokenHeader.match(new RegExp(`^${AUTH_TOKENS.ACCESS_TOKEN}=([^;]+)`));
+            const refreshTokenMatch = refreshTokenHeader.match(new RegExp(`^${AUTH_TOKENS.REFRESH_TOKEN}=([^;]+)`));
             const accessExpiryMatch = accessTokenHeader.match(/Max-Age=(\d+)/);
             const refreshExpiryMatch = refreshTokenHeader.match(/Max-Age=(\d+)/);
 
@@ -62,24 +63,21 @@ const login = async (prevState: unknown, formData: FormData) => {
                 ? new Date(now.getTime() + parseInt(refreshExpiryMatch[1]) * 1000)
                 : new Date(now.getTime() + 7 * 24 * 3600 * 1000); // Default 7 days
 
+            // Set server-side cookies with standardized names and options
             cookies().set({
-                name: "accessToken",
+                name: AUTH_TOKENS.ACCESS_TOKEN,
                 value: accessTokenValue,
                 expires: accessExpiry,
                 httpOnly: true,
-                path: "/",
-                domain: "epicfood.live",
-                sameSite: "strict",
+                ...COOKIE_OPTIONS,
             });
 
             cookies().set({
-                name: "refreshToken",
+                name: AUTH_TOKENS.REFRESH_TOKEN,
                 value: refreshTokenValue,
                 expires: refreshExpiry,
                 httpOnly: true,
-                path: "/",
-                domain: "epicfood.live",
-                sameSite: "strict",
+                ...COOKIE_OPTIONS,
             });
 
             return {

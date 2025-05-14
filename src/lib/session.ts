@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { AUTH_TOKENS } from "@/lib/cookies";
 
 export enum Roles {
     ADMIN = "admin",
@@ -27,7 +28,7 @@ export const getSelf = async (): Promise<Session | null> => {
     // TODO: Use env for backend url
     const response = await fetch(`https://api.epicfood.live/api/v1/auth/api/v1/auth/self`, {
         headers: {
-            Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
+            Authorization: `Bearer ${cookies().get(AUTH_TOKENS.ACCESS_TOKEN)?.value}`,
         },
     });
 
