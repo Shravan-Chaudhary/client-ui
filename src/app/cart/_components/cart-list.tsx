@@ -46,12 +46,15 @@ const CartList = () => {
             {/* Divider */}
             {cart.map((item) => (
                 <div key={item.hash}>
-                    <CartItem key={item.hash} cartItem={item} />
+                    <div className="hidden sm:block">
+                        <CartItem key={item.hash} cartItem={item} />
+                    </div>
+                    <div className="block sm:hidden">
+                        <MobileCartItem cartItem={item} />
+                    </div>
                     <Separator className="my-4" />
                 </div>
             ))}
-            <MobileCartItem />
-            <Separator className="my-4" />
             {/* Price and Checkout */}
             <div className="mt-6 flex items-center justify-between">
                 <p className="text-base font-semibold md:text-lg">&#8377;{grandTotal}</p>

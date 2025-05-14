@@ -1,9 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { CartItem as ICartItem } from "@/types";
 import Image from "next/image";
 import React from "react";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { useTotal } from "@/lib/hooks/useTotal";
+import { decrementCartItem, deleteCartItem, incrementCartItem } from "@/lib/store/features/cart/cartSlice";
 
-const MobileCartItem = () => {
+interface Props {
+    cartItem: ICartItem;
+}
+const MobileCartItem = ({ cartItem }: Props) => {
+    const dispatch = useAppDispatch();
+
+    const handleIncrement = () => {
+        dispatch(incrementCartItem(cartItem));
+    };
+
+    const handleDecrement = () => {
+        dispatch(decrementCartItem(cartItem));
+    };
+
+    const handleDelete = () => {
+        dispatch(deleteCartItem(cartItem));
+    };
+
+    const totalItemPrice = useTotal(cartItem);
+
     return (
         // Image
         // Name and Config
@@ -17,15 +40,23 @@ const MobileCartItem = () => {
                         <Image src={"/pizza.png"} alt="product-image" height={80} width={80} />
                     </div>
                     <div className="flex flex-col">
-                        <h4 className="text-sm font-medium md:text-base">Mushroom Pizza</h4>
-                        <p className="text-xs text-neutral-500 md:text-sm">Small, Thin</p>
-                        <p className="text-xs text-neutral-500 md:text-sm">Cheese</p>
+                        <h4 className="text-sm font-medium md:text-base">{cartItem.name}</h4>
+                        <p className="text-xs text-neutral-500 md:text-sm">
+                            {Object.values(cartItem.selectedConfig.selectedPriceConfig)
+                                .map((value) => value)
+                                .join(", ")}
+                        </p>
+                        <p className="text-xs text-neutral-500 md:text-sm">
+                            {Object.values(cartItem.selectedConfig.selectedToppings)
+                                .map((value) => value.name)
+                                .join(", ")}
+                        </p>
                     </div>
                 </div>
 
                 {/* Price & Delete */}
                 <div className="flex items-center justify-center gap-5 ">
-                    <p className="text-base font-semibold md:text-lg">&#8377;800</p>
+                    <p className="text-base font-semibold md:text-lg">&#8377;{totalItemPrice * cartItem.qty}</p>
                 </div>
             </div>
             {/* Lower Box*/}
@@ -37,17 +68,19 @@ const MobileCartItem = () => {
                         size="icon"
                         className="size-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 focus-visible:bg-primary-foreground/20 focus-visible:ring-offset-primary"
                         aria-label="Decrease quantity"
+                        onClick={handleDecrement}
                     >
                         <Minus className="size-4" />
                     </Button>
                     <p className="w-8 text-center text-sm font-semibold text-primary-foreground" aria-live="polite">
-                        2
+                        {cartItem.qty}
                     </p>
                     <Button
                         variant="ghost"
                         size="icon"
                         className="size-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 focus-visible:bg-primary-foreground/20 focus-visible:ring-offset-primary"
                         aria-label="Increase quantity"
+                        onClick={handleIncrement}
                     >
                         <Plus className="size-4" />
                     </Button>
@@ -58,6 +91,7 @@ const MobileCartItem = () => {
                     size="icon"
                     className="flex size-8 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary"
                     aria-label="Delete item"
+                    onClick={handleDelete}
                 >
                     <Trash2 className="size-5" />
                 </Button>
